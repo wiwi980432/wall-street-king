@@ -38,6 +38,97 @@
 #gameScreen .hand-panel .company-card{border-color:#b9914d;background:linear-gradient(145deg,#2d3e5d,#0b192d)}
 @media(max-width:800px){#gameScreen .game-layout{grid-template-columns:1fr}}
 @media(max-width:460px){#gameScreen .board .company-card{width:99px;flex-basis:99px;min-height:135px;padding:9px 4px}#gameScreen .board .company-card .emoji{font-size:1.8rem}#gameScreen .board .company-card .attrs span{font-size:.55rem}#gameScreen .boards{padding:12px 4px;border-width:5px}}
+</style><style>
+/* 單螢幕對局：所有主要操作在可視範圍內，只有手牌/紀錄區可橫向或區域內捲動 */
+body:has(#gameScreen.active){overflow:hidden}
+body:has(#gameScreen.active) .app{height:100dvh;min-height:0;overflow:hidden;display:flex;flex-direction:column;padding:7px 12px 5px}
+body:has(#gameScreen.active) .topbar{flex:0 0 auto;margin-bottom:5px}
+body:has(#gameScreen.active) .logo{height:32px;width:32px;font-size:19px;border-radius:9px}
+body:has(#gameScreen.active) .brand strong{font-size:.8rem}
+body:has(#gameScreen.active) .brand small{font-size:.55rem}
+body:has(#gameScreen.active) .topbar .iconbtn{padding:5px 8px;font-size:.7rem}
+#gameScreen.active{flex:1;min-height:0;display:flex;flex-direction:column}
+#gameScreen .page-title{flex:0 0 auto;margin:0 0 5px}
+#gameScreen .page-title h2{font-size:.95rem}
+#gameScreen .page-title .iconbtn{padding:5px 8px}
+#gameScreen .game-layout{flex:1;min-height:0;grid-template-columns:minmax(0,1fr) 190px;gap:8px}
+#gameScreen .game-layout>div:first-child{display:flex;flex-direction:column;min-height:0;gap:6px}
+#gameScreen .game-layout>div:first-child>.panel:first-child{flex:1;min-height:0;display:flex;flex-direction:column;padding:8px}
+#gameScreen .stats{margin-bottom:5px;gap:5px}
+#gameScreen .stat{padding:4px 7px}
+#gameScreen .stat small{font-size:.6rem}
+#gameScreen .stat strong{font-size:.9rem}
+#gameScreen .row{gap:5px}
+#gameScreen .row .btn{padding:6px 9px;font-size:.72rem}
+#gameScreen #status{margin:4px 0;font-size:.69rem}
+#gameScreen .market-event{margin-top:3px;padding:5px 9px;gap:7px}
+#gameScreen .event-icon{font-size:1.1rem}
+#gameScreen .market-event small{font-size:.58rem}
+#gameScreen .market-event strong{font-size:.74rem}
+#gameScreen .market-event p{font-size:.63rem;margin:0}
+#gameScreen .boards{flex:1;min-height:0;justify-content:space-around;margin-top:5px;padding:5px 9px;border-width:4px;border-radius:18px;overflow:hidden}
+#gameScreen .board{padding:2px}
+#gameScreen .board h3{font-size:.69rem;margin:0 0 3px}
+#gameScreen .board .card-grid{min-height:0;gap:5px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin}
+#gameScreen .board .company-card{width:84px;flex:0 0 84px;min-height:0;height:clamp(66px,13vh,116px);padding:5px 3px;border-width:2px;box-shadow:0 3px 0 #5e3e25,0 5px 8px #0007}
+#gameScreen .board .company-card .emoji{font-size:clamp(1.1rem,3vh,1.8rem)}
+#gameScreen .board .company-card .name{font-size:.61rem;margin:2px 0}
+#gameScreen .board .company-card .rank{font-size:.52rem}
+#gameScreen .board .company-card .attrs{margin-top:3px;gap:2px}
+#gameScreen .board .company-card .attrs span{font-size:.49rem;padding:2px}
+#gameScreen .arena-line{margin:3px 2px;padding:2px;font-size:.65rem;gap:6px}
+#gameScreen .arena-line span{font-size:.95rem}
+#gameScreen .hand-panel{flex:0 0 auto;max-height:31%;min-height:0;margin:0;padding:7px}
+#gameScreen .hand-panel h3{font-size:.8rem;margin:0 0 3px}
+#gameScreen .hand-panel p{display:none}
+#gameScreen .hand-panel .row{margin-bottom:5px!important}
+#gameScreen #hand{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:6px;padding-bottom:3px;scrollbar-width:thin}
+#gameScreen #hand .company-card{flex:0 0 105px;min-height:0;height:clamp(95px,18vh,150px);padding:6px}
+#gameScreen #hand .company-card .emoji{font-size:1.2rem}
+#gameScreen #hand .company-card .name{font-size:.72rem}
+#gameScreen #hand .company-card .attrs{margin-top:4px}
+#gameScreen .sidecol{min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:6px}
+#gameScreen .sidecol .panel{padding:8px;min-height:0}
+#gameScreen .sidecol .panel:first-child{flex:1;display:flex;flex-direction:column}
+#gameScreen .sidecol h3{font-size:.78rem;margin-bottom:4px}
+#gameScreen .log{flex:1;min-height:0;max-height:none;overflow-y:auto;font-size:.69rem}
+#gameScreen .sidecol .mission{font-size:.67rem}
+#gameScreen>.rules,#gameScreen~.notice{display:none}
+#gameScreen #resultPanel{position:fixed;z-index:50;top:50%;left:50%;transform:translate(-50%,-50%);width:min(420px,92vw);max-height:85dvh;overflow:auto;box-shadow:0 0 0 100vmax #000a,0 15px 60px #000}
+body:has(#gameScreen.active) .notice{display:none}
+@media(max-width:800px){
+#gameScreen .game-layout{grid-template-columns:1fr}
+#gameScreen .sidecol{display:none}
+}
+@media(max-width:600px){
+body:has(#gameScreen.active) .app{padding:4px 5px}
+body:has(#gameScreen.active) .topbar{margin-bottom:2px}
+#gameScreen .page-title{margin-bottom:3px}
+#gameScreen .page-title h2{font-size:.8rem}
+#gameScreen .game-layout>div:first-child>.panel:first-child{padding:5px}
+#gameScreen .stats{gap:3px}
+#gameScreen .stat{padding:3px 5px}
+#gameScreen .stat small{font-size:.55rem}
+#gameScreen .stat strong{font-size:.78rem}
+#gameScreen .row .btn{padding:5px 6px;font-size:.64rem}
+#gameScreen #status{font-size:.6rem;margin:2px 0}
+#gameScreen .market-event{padding:3px 6px}
+#gameScreen .market-event p{font-size:.58rem}
+#gameScreen .boards{padding:4px;border-width:3px}
+#gameScreen .board .company-card{width:clamp(73px,24vw,92px);flex-basis:clamp(73px,24vw,92px);height:clamp(68px,12.5vh,105px)}
+#gameScreen .board .company-card .emoji{font-size:1.1rem}
+#gameScreen .board .company-card .name{font-size:.55rem}
+#gameScreen .board .company-card .attrs span{font-size:.44rem}
+#gameScreen .hand-panel{max-height:29%;padding:5px}
+#gameScreen #hand .company-card{flex-basis:90px;height:clamp(90px,17vh,125px)}
+}
+@media(max-height:680px){
+#gameScreen .market-event p,#gameScreen #status{display:none}
+#gameScreen .board .company-card{height:clamp(56px,11vh,76px)}
+#gameScreen .board .company-card .emoji{font-size:1rem}
+#gameScreen .hand-panel{max-height:27%}
+#gameScreen #hand .company-card{height:clamp(78px,15vh,105px)}
+}
 </style></head>
 <body><div class="app">
 <header class="topbar"><div class="brand"><div class="logo">♛</div><div><strong>華爾街王者</strong><small>WALL STREET KING</small></div></div><button class="iconbtn" id="homeBtn" aria-label="返回首頁">⌂ 首頁</button></header>
