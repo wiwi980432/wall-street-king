@@ -121,6 +121,24 @@
  #game .slots>.duel-card,#game .slots>.empty{max-height:21dvh}
  #game .fan .duel-card{max-height:24dvh}
 }
+</style><style>
+/* Player-first sizing: 3 large opening hand cards, portrait ratio never distorted. */
+@media(max-width:700px){
+ #game .fan{gap:5px;justify-content:center!important}
+ #game .fan .duel-card{flex:0 0 min(calc((100% - 14px)/3),125px)!important;width:min(calc((100% - 14px)/3),125px)!important;max-width:125px!important;aspect-ratio:5/7!important;height:auto!important;max-height:30dvh;min-height:0!important;margin:0!important}
+ #game .hand-area{flex:1 1 auto;min-height:0}
+ #game #myBoard{gap:5px}
+ #game #myBoard>.duel-card,#game #myBoard>.empty{aspect-ratio:5/7!important;width:100%;height:auto!important;max-height:23dvh}
+ #game #cpuBoard>.duel-card,#game #cpuBoard>.empty{max-height:19dvh}
+ #game .arena{flex:0 1 auto}
+ #game .duel-card .card-skill b{font-size:clamp(.62rem,2.4vw,.85rem)}
+ #game .duel-card .card-skill span{font-size:clamp(.6rem,2.2vw,.8rem)}
+}
+@media(max-width:700px) and (max-height:700px){
+ #game .fan .duel-card{max-height:26dvh}
+ #game #myBoard>.duel-card,#game #myBoard>.empty{max-height:20dvh}
+ #game #cpuBoard>.duel-card,#game #cpuBoard>.empty{max-height:16dvh}
+}
 </style></head><body><div class="app"><header class="top"><div class="brand">💰 華爾街王者 <small>百兆富豪戰 · 全球百大企業</small></div><button class="btn outline" id="homeButton">首頁</button></header>
 <section class="screen" id="home"><div class="hero"><div>🏆 全球百大企業卡牌競賽</div><h1>百兆富豪戰</h1><div class="big">目標 $100 兆</div><p>招募世界級企業、出牌立即發動技能、替換場上公司來經營你的帝國。<br>比電腦更快累積 100 兆美元！</p><button class="btn primary" id="startButton">🎮 開始遊戲</button><button class="btn" id="rulesButton">📘 玩法教學</button><button class="btn" id="catalogButton">🃏 百大企業圖鑑</button></div><p class="source">卡牌池參考 2026 年全球大型上市公司市值排名；排名會隨市場變動。年度淨利為供遊戲使用的近似示意值，非即時或經審計的最新財報。技能與遊戲收益為虛構設定。</p></section>
 <section class="screen" id="rulesScreen" hidden><h2>📘 三步學會百兆富豪戰</h2><div class="rules"><p><strong>① 抽牌與部署：</strong>開局獲得 3 張手牌。每回合將 1 張手牌往上拖到我方空格部署，或拖到既有公司上直接替換；最多同時擁有 3 家企業。出牌立即觸發該公司的專屬技能。</p><p><strong>② 賺錢與技能：</strong>每回合結算時，場上所有公司自動帶來收益。每張公司卡有獨特技能；選擇場上公司可使用技能，或部署新公司，兩者每回合只能選一個，完成後自動換電腦。</p><p><strong>③ 勝利：</strong>玩家與電腦輪流經營，誰先累積到 <strong>100 兆美元</strong> 就贏！</p><p>公司卡顯示年度淨利示意值（億美元）；遊戲每回合收益經過放大與平衡，讓對局能在合理時間結束。</p></div><button class="btn primary" id="rulesStart">開始遊戲 →</button><button class="btn" id="rulesBack">返回首頁</button></section>
