@@ -666,6 +666,16 @@ body>.swipe-zoom-preview{display:none!important}
 #game .message{flex:0 0 auto!important;font-size:.69rem!important;text-align:center!important;padding:2px!important}
 #game .foot{flex:0 0 auto!important;padding:1px 8px!important}
 @media(max-height:700px){#game .annual-ledger{flex-basis:40%!important}#game .annual-side{padding:5px 8px!important;gap:1px!important}#game .year-card-history .portfolio-chip{padding:2px 5px!important}}
+</style><style>
+.tap-select-actions[hidden]{display:none!important}
+.tap-select-actions{display:flex!important;justify-content:center;gap:12px!important;z-index:2147483647!important;position:relative!important;width:min(90vw,360px)!important;margin:12px auto 0!important}
+.tap-select-actions button{flex:1!important;border:2px solid #f3d18a!important;border-radius:12px!important;padding:12px 8px!important;font-size:1rem!important;font-weight:900!important;color:#fff!important;cursor:pointer!important;touch-action:manipulation!important}
+.tap-select-confirm{background:linear-gradient(135deg,#15935d,#087648)!important}
+.tap-select-cancel{background:linear-gradient(135deg,#a4444e,#75313b)!important}
+.tap-zoom-overlay:has(.tap-select-actions){display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important}
+.tap-zoom-overlay:has(.tap-select-actions) .tap-zoom-hint{position:relative!important;inset:auto!important;bottom:auto!important;margin-top:8px!important;order:1!important}
+.tap-zoom-overlay:has(.tap-select-actions) .tap-select-actions{order:2!important}
+.tap-zoom-overlay:has(.tap-select-actions) .tap-zoom-card{flex:0 1 auto!important}
 </style></head><body><div class="app"><header class="top"><div class="brand">💰 華爾街王者 <small>百兆富豪戰 · 全球百大企業</small></div><button class="btn outline" id="homeButton">首頁</button></header>
 <section class="screen" id="home"><div class="hero"><div>🏆 全球百大企業卡牌競賽</div><h1>百兆富豪戰</h1><div class="big">目標 $100 兆</div><p>招募世界級企業、出牌立即發動技能、替換場上公司來經營你的帝國。<br>比電腦更快累積 100 兆美元！</p><button class="btn primary" id="startButton">🎮 開始遊戲</button><button class="btn" id="rulesButton">📘 玩法教學</button><button class="btn" id="catalogButton">🃏 百大企業圖鑑</button></div><p class="source">卡牌池參考 2026 年全球大型上市公司市值排名；排名會隨市場變動。年度淨利為供遊戲使用的近似示意值，非即時或經審計的最新財報。技能與遊戲收益為虛構設定。</p></section>
 <section class="screen" id="rulesScreen" hidden><h2>📘 三步學會百兆富豪戰</h2><div class="rules"><p><strong>遊戲規則：</strong>每一年從 3 張手牌中選擇 1 張公司，立即觸發該卡技能，並將公司加入自己的投資組合。選過的公司往後每一年都會持續創造收益，累積的公司不會因為新選牌而失去收益。</p><p>選牌後自動進行雙方年度收益結算，再獲得新的 3 張手牌。誰先累積到 <strong>100 兆美元</strong> 就獲勝！每年可刷新手牌一次。</p></div><button class="btn primary" id="rulesStart">開始遊戲 →</button><button class="btn" id="rulesBack">返回首頁</button></section>
@@ -823,19 +833,28 @@ el.addEventListener("pointerup",e=>{
  }
 },{passive:true});
 el.addEventListener("pointercancel",()=>{clearPreview();el.style.removeProperty("--drag-x");el.style.removeProperty("--drag-y");el.classList.remove("dragging");document.querySelectorAll(".drop-ready,.drop-hover").forEach(x=>x.classList.remove("drop-ready","drop-hover"))});
-el.onclick=()=>{if(swiped||Date.now()<(window.suppressCardClickUntil||0))return;if(zone==="hand"){if(phase==="player"&&!acted){selected=id;deploy()} }else if(zone==="my"||zone==="cpu"||zone==="catalog"){showTapPreview(c)}};
+el.onclick=()=>{if(swiped||Date.now()<(window.suppressCardClickUntil||0))return;if(zone==="hand"){if(phase==="player"&&!acted)showTapPreview(c,true)}else if(zone==="my"||zone==="cpu"||zone==="catalog"){showTapPreview(c)}};
 });}
-function showTapPreview(c){
+function showTapPreview(c,selectable=false){
  const existing=document.querySelector(".tap-zoom-overlay");if(existing)existing.remove();
  const overlay=document.createElement("div");overlay.className="tap-zoom-overlay";
  const preview=document.createElement("div");preview.className="tap-zoom-card";
  preview.innerHTML=cardHTML(c,"preview");
  const card=preview.querySelector(".duel-card");
  if(card){card.classList.add("swipe-zoom-preview");card.style.setProperty("--zoom-rise","0px")}
- const hint=document.createElement("div");hint.className="tap-zoom-hint";hint.textContent="點擊空白處返回 · 查看放大卡牌";
- overlay.append(preview,hint);document.body.appendChild(overlay);
- overlay.addEventListener("click",()=>overlay.remove());
- preview.addEventListener("click",e=>e.stopPropagation());
+ const hint=document.createElement("div");hint.className="tap-zoom-hint";
+ hint.textContent=selectable?"再點一下這張牌，選擇確認或取消":"點擊空白處返回 · 查看放大卡牌";
+ const actions=document.createElement("div");actions.className="tap-select-actions";actions.hidden=true;
+ if(selectable){
+  const confirm=document.createElement("button");confirm.type="button";confirm.className="tap-select-confirm";confirm.textContent="✓ 確認選擇";
+  const cancel=document.createElement("button");cancel.type="button";cancel.className="tap-select-cancel";cancel.textContent="✕ 取消";
+  confirm.onclick=e=>{e.stopPropagation();if(phase!=="player"||acted||finished)return;overlay.remove();selected=c.id;deploy()};
+  cancel.onclick=e=>{e.stopPropagation();overlay.remove();selected=null};
+  actions.append(confirm,cancel);
+  preview.addEventListener("click",e=>{e.stopPropagation();if(!actions.hidden)return;actions.hidden=false;hint.textContent="確定要選擇這家公司嗎？"});
+ }else preview.addEventListener("click",e=>e.stopPropagation());
+ overlay.append(preview,hint,actions);document.body.appendChild(overlay);
+ overlay.addEventListener("click",e=>{if(e.target===overlay||e.target===hint){overlay.remove();selected=null}});
 }
 function openDetail(c,zone){detailCard=c;detailZone=zone;$("detailLogo").src="https://www.google.com/s2/favicons?domain="+encodeURIComponent(c.domain)+"&sz=128";$("detailArt").textContent=c.emoji;$("detailName").textContent=c.name;$("detailMeta").textContent="市值榜參考 #"+c.id+" · "+c.country+" · "+c.sector;$("detailProfit").innerHTML="<b>💵 年度淨利示意值</b><div>約 "+c.profit+" 億美元 / 年</div><small>遊戲每一年收益："+income((zone==="my"?mine:zone==="cpu"?theirs:hand).find(x=>x.id===c.id)||c).toFixed(2)+" 兆美元（遊戲化放大）</small>";$("detailSkill").innerHTML="<b>✨ 專屬技能："+skillSpec(c).name+"</b><div>"+skillSpec(c).desc+"</div>";$("detailAction").textContent=zone==="my"?"查看完畢":zone==="hand"?"⬆ 出牌並觸發技能":"返回戰場";$("detailAction").disabled=(zone==="hand"&&(phase!=="player"||acted));$("detail").classList.remove("hidden")}
 function closeDetail(){$("detail").classList.add("hidden");detailCard=null;detailZone=null}
