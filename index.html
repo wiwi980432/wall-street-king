@@ -432,7 +432,7 @@ body:has(#game:not([hidden])) .app{position:relative;z-index:1;max-width:1440px}
  #game .arena{flex-basis:57%!important}
  #game .fan .duel-card{height:min(100%,19dvh)!important;max-height:19dvh!important}
 }
-</style></head><body><div class="app"><header class="top"><div class="brand">💰 華爾街王者 <small>百兆富豪戰 · 全球百大企業</small></div><button class="btn outline" id="homeButton">首頁</button></header>
+</style><style>@media(orientation:portrait) and (max-width:850px){#game .fan,#game .fan .duel-card{touch-action:pan-x!important}}.screen[hidden],#game[hidden]{display:none!important}</style></head><body><div class="app"><header class="top"><div class="brand">💰 華爾街王者 <small>百兆富豪戰 · 全球百大企業</small></div><button class="btn outline" id="homeButton">首頁</button></header>
 <section class="screen" id="home"><div class="hero"><div>🏆 全球百大企業卡牌競賽</div><h1>百兆富豪戰</h1><div class="big">目標 $100 兆</div><p>招募世界級企業、出牌立即發動技能、替換場上公司來經營你的帝國。<br>比電腦更快累積 100 兆美元！</p><button class="btn primary" id="startButton">🎮 開始遊戲</button><button class="btn" id="rulesButton">📘 玩法教學</button><button class="btn" id="catalogButton">🃏 百大企業圖鑑</button></div><p class="source">卡牌池參考 2026 年全球大型上市公司市值排名；排名會隨市場變動。年度淨利為供遊戲使用的近似示意值，非即時或經審計的最新財報。技能與遊戲收益為虛構設定。</p></section>
 <section class="screen" id="rulesScreen" hidden><h2>📘 三步學會百兆富豪戰</h2><div class="rules"><p><strong>① 抽牌與部署：</strong>開局獲得 3 張手牌。每回合將 1 張手牌往上拖到我方空格部署，或拖到既有公司上直接替換；最多同時擁有 3 家企業。出牌立即觸發該公司的專屬技能。</p><p><strong>② 賺錢與技能：</strong>每回合結算時，場上所有公司自動帶來收益。每張公司卡有獨特技能；選擇場上公司可使用技能，或部署新公司，兩者每回合只能選一個，完成後自動換電腦。</p><p><strong>③ 勝利：</strong>玩家與電腦輪流經營，誰先累積到 <strong>100 兆美元</strong> 就贏！</p><p>公司卡顯示年度淨利示意值（億美元）；遊戲每回合收益經過放大與平衡，讓對局能在合理時間結束。</p></div><button class="btn primary" id="rulesStart">開始遊戲 →</button><button class="btn" id="rulesBack">返回首頁</button></section>
 <section class="screen" id="catalogScreen" hidden><h2>🃏 全球百大企業圖鑑 <span class="pill" id="catalogCount">100 家</span></h2><div class="catalog-controls"><input id="search" placeholder="搜尋公司、國家或產業"><button class="btn" id="catalogBack">返回首頁</button></div><div class="catalog" id="catalog"></div><p class="source">排名參考：2026 年大型上市公司市值榜單；卡片年度淨利為近似示意，並非最新正式財報。</p></section>
@@ -448,8 +448,8 @@ const SPECIALS=["市場擴張","科技突破","品牌爆發","國際合作","成
 const companies=DATA.map((c,i)=>({...c,skill:c.name+"・"+SPECIALS[i%SPECIALS.length],skillDesc:["立即賺取相當於本公司 3 回合的收益。","本公司永久增加 60% 每回合收益。","所有我方公司下一回合收益加倍。","獲得相當於對手目前財富 6% 的獎金（上限 6 兆）。","本公司永久增加 50% 每回合收益。","立即獲得 5 兆美元。","立即獲得 3 兆，並使本公司永久增加 20% 收益。","本公司本回合額外產生 4 倍收益。","獲得我方現有財富 10% 的額外收益（至少 2 兆）。","所有我方公司永久增加 12% 每回合收益。"][i%10]}));
 let deck=[],hand=[],mine=[],theirs=[],money=0,cpuMoney=0,turn=1,phase="player",acted=false,selected=null,detailCard=null,detailZone=null,gameId=0,finished=false;
 function show(id){document.querySelectorAll(".screen").forEach(el=>el.hidden=el.id!==id);$("homeButton").style.display=id==="home"?"none":""}
-function shuffled(){return [...companies].sort(()=>Math.random()-.5)}
-function pull(){if(!deck.length)deck=shuffled().filter(c=>![...hand,...mine,...theirs].some(x=>x.id===c.id));return deck.pop()||companies[Math.floor(Math.random()*companies.length)]}
+function shuffled(){const a=[...companies];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function pull(){if(!deck.length){const used=new Set([...hand,...mine,...theirs].map(c=>c.id));deck=shuffled().filter(c=>!used.has(c.id))}return deck.pop()||null}
 function format(v){return "$"+Math.max(0,v).toFixed(1)+" 兆"}
 function income(c){return Math.max(.5,c.profit*PROFIT_SCALE)*(c.mult||1)}
 function totalIncome(arr){return arr.reduce((s,c)=>s+income(c),0)}
@@ -499,15 +499,17 @@ function cardHTML(c,zone,i=0,n=1){
 function boardHTML(arr,zone){return Array.from({length:3},(_,i)=>arr[i]?cardHTML(arr[i],zone):'<div class="empty" data-slot="'+i+'">＋ 空位</div>').join("")}
 function render(){if($("game").hidden)return;$("myMoney").textContent=format(money);$("cpuMoney").textContent=format(cpuMoney);$("myBar").style.width=Math.min(100,money)+"%";$("cpuBar").style.width=Math.min(100,cpuMoney)+"%";$("myRate").textContent="每回合 +"+totalIncome(mine).toFixed(1)+" 兆";$("cpuRate").textContent="每回合 +"+totalIncome(theirs).toFixed(1)+" 兆";$("turn").textContent="第 "+turn+" 回合";$("phase").textContent=phase==="player"?"🟢 你的回合":"🤖 電腦思考中";$("mySlots").textContent=mine.length+" / 3";$("cpuSlots").textContent=theirs.length+" / 3";$("myBoard").innerHTML=boardHTML(mine,"my");$("cpuBoard").innerHTML=boardHTML(theirs,"cpu");$("hand").innerHTML=hand.map((c,i)=>cardHTML(c,"hand",i,hand.length)).join("");$("handCount").textContent=hand.length+" 張";$("prompt").textContent=acted?"✓ 已完成行動，請結束回合":"↑ 拖曳手牌到我方空格或公司上，出牌即發動技能";$("message").textContent=acted?"電腦正在行動":mine.length>=3?"欄位已滿！拖到場上公司即可替換":selected!==null?"將手牌拖到上方空格或公司替換":"拖曳到空格或既有公司，出牌即發動技能";document.querySelectorAll(".company").forEach(el=>{
 const id=+el.dataset.id,zone=el.dataset.zone,c=companies[id-1];
-let startY=0,startX=0,swiped=false,dragging=false;
+let startY=0,startX=0,swiped=false,dragging=false,scrollGesture=false;
 el.addEventListener("pointerdown",e=>{
  if(zone!=="hand"||e.pointerType==="mouse"||phase!=="player"||acted)return;
- startY=e.clientY;startX=e.clientX;dragging=false;swiped=false;
+ startY=e.clientY;startX=e.clientX;dragging=false;swiped=false;scrollGesture=false;
  el.setPointerCapture(e.pointerId);
 },{passive:true});
 el.addEventListener("pointermove",e=>{
  if(zone!=="hand"||!el.hasPointerCapture(e.pointerId))return;
  const dx=e.clientX-startX,dy=e.clientY-startY;
+ if(!dragging&&Math.abs(dx)>12&&Math.abs(dx)>Math.abs(dy)*1.2){scrollGesture=true;return}
+ if(scrollGesture)return;
  if(!dragging&&Math.hypot(dx,dy)>12){dragging=true;el.classList.add("dragging");document.querySelectorAll("#myBoard .empty, #myBoard .company").forEach(x=>x.classList.add("drop-ready"))}
  if(dragging){
   el.style.setProperty("--drag-x",dx+"px");el.style.setProperty("--drag-y",dy+"px");
@@ -520,6 +522,7 @@ el.addEventListener("pointermove",e=>{
 el.addEventListener("pointerup",e=>{
  if(zone!=="hand"||!el.hasPointerCapture(e.pointerId))return;
  el.releasePointerCapture(e.pointerId);
+ if(scrollGesture){swiped=true;window.suppressCardClickUntil=Date.now()+250;return}
  if(dragging){
   const slot=Array.from($("myBoard").children).find(target=>{
     const r=target.getBoundingClientRect();
@@ -533,10 +536,10 @@ el.addEventListener("pointerup",e=>{
   if(e.clientY<startY-35){openDetail(c,zone)}
  }
 },{passive:true});
-el.addEventListener("pointercancel",()=>{el.classList.remove("dragging");document.querySelectorAll(".drop-ready,.drop-hover").forEach(x=>x.classList.remove("drop-ready","drop-hover"))});
+el.addEventListener("pointercancel",()=>{el.style.removeProperty("--drag-x");el.style.removeProperty("--drag-y");el.classList.remove("dragging");document.querySelectorAll(".drop-ready,.drop-hover").forEach(x=>x.classList.remove("drop-ready","drop-hover"))});
 el.onclick=()=>{if(swiped||Date.now()<(window.suppressCardClickUntil||0))return;if(zone==="hand"){selected=id;render();openDetail(c,zone)}else openDetail(c,zone)};
 });}
-function openDetail(c,zone){detailCard=c;detailZone=zone;$("detailLogo").src="https://www.google.com/s2/favicons?domain="+encodeURIComponent(c.domain)+"&sz=128";$("detailArt").textContent=c.emoji;$("detailName").textContent=c.name;$("detailMeta").textContent="市值榜參考 #"+c.id+" · "+c.country+" · "+c.sector;$("detailProfit").innerHTML="<b>💵 年度淨利示意值</b><div>約 "+c.profit+" 億美元 / 年</div><small>遊戲每回合收益："+income((zone==="my"?mine:zone==="cpu"?theirs:hand).find(x=>x.id===c.id)||c).toFixed(2)+" 兆美元（遊戲化放大）</small>";$("detailSkill").innerHTML="<b>✨ 專屬技能："+c.skill+"</b><div>"+skillSpec(c).desc+"</div>";$("detailAction").textContent=zone==="my"?"查看完畢":zone==="hand"?"⬆ 出牌並觸發技能":"返回戰場";$("detailAction").disabled=(zone==="hand"&&(acted||phase!=="player"));$("detail").classList.remove("hidden")}
+function openDetail(c,zone){detailCard=c;detailZone=zone;$("detailLogo").src="https://www.google.com/s2/favicons?domain="+encodeURIComponent(c.domain)+"&sz=128";$("detailArt").textContent=c.emoji;$("detailName").textContent=c.name;$("detailMeta").textContent="市值榜參考 #"+c.id+" · "+c.country+" · "+c.sector;$("detailProfit").innerHTML="<b>💵 年度淨利示意值</b><div>約 "+c.profit+" 億美元 / 年</div><small>遊戲每回合收益："+income((zone==="my"?mine:zone==="cpu"?theirs:hand).find(x=>x.id===c.id)||c).toFixed(2)+" 兆美元（遊戲化放大）</small>";$("detailSkill").innerHTML="<b>✨ 專屬技能："+skillSpec(c).name+"</b><div>"+skillSpec(c).desc+"</div>";$("detailAction").textContent=zone==="my"?"查看完畢":zone==="hand"?"⬆ 出牌並觸發技能":"返回戰場";$("detailAction").disabled=(zone==="hand"&&(acted||phase!=="player"));$("detail").classList.remove("hidden")}
 function closeDetail(){$("detail").classList.add("hidden");detailCard=null;detailZone=null}
 function deploy(slot=null){
  if(phase!=="player"||acted||selected===null)return;
@@ -569,10 +572,10 @@ function special(c,owner){
 }
 function collect(arr){return arr.reduce((sum,c)=>{let v=income(c);if(c.nextDouble){v*=c.nextDouble;c.nextDouble=false}return sum+v},0)}
 function winCheck(){if(money<TARGET&&cpuMoney<TARGET)return false;finished=true;phase="done";gameId++;$("resultEmoji").textContent=money>=TARGET?"🏆":"🤖";$("resultTitle").textContent=money>=TARGET?"你成為百兆富豪！":"電腦先賺到百兆！";$("resultText").textContent="最終財富："+format(money)+" VS "+format(cpuMoney)+"。";$("result").classList.remove("hidden");render();return true}
-function start(){gameId++;deck=shuffled();hand=[];mine=[];theirs=[];money=0;cpuMoney=0;turn=1;phase="player";acted=false;selected=null;finished=false;for(let i=0;i<3;i++)hand.push(pull());for(let i=0;i<2;i++)theirs.push({...pull(),mult:1});$("result").classList.add("hidden");closeDetail();show("game");render()}
+function start(){gameId++;deck=shuffled();hand=[];mine=[];theirs=[];money=0;cpuMoney=0;turn=1;phase="player";acted=false;selected=null;finished=false;for(let i=0;i<3;i++){const c=pull();if(c)hand.push(c)}for(let i=0;i<2;i++){const c=pull();if(c)theirs.push({...c,mult:1})}$("result").classList.add("hidden");closeDetail();show("game");render()}
 function end(){if(phase!=="player"||finished)return;phase="cpu";selected=null;render();const token=gameId;setTimeout(()=>{if(token!==gameId||finished)return;cpuTurn()},850)}
-function cpuTurn(){if(phase!=="cpu"||finished)return;cpuMoney+=collect(theirs);if(winCheck())return;{const c={...pull(),mult:1};if(theirs.length<3)theirs.push(c);else theirs[Math.floor(Math.random()*theirs.length)]=c;special(c,"cpu")}if(winCheck())return;money+=collect(mine);if(winCheck())return;turn++;acted=false;phase="player";if(hand.length<7)hand.push(pull());render()}
-$("startButton").onclick=start;$("rulesStart").onclick=start;$("againButton").onclick=start;$("rulesButton").onclick=()=>show("rulesScreen");$("rulesBack").onclick=()=>show("home");$("catalogButton").onclick=()=>{show("catalogScreen");catalog()};$("catalogBack").onclick=()=>show("home");$("homeButton").onclick=()=>{if(!$("game").hidden&&!finished&&!confirm("確定離開這局遊戲？"))return;gameId++;show("home")};$("infoButton").onclick=()=>{alert("百兆富豪戰：每回合選擇部署 1 張公司，或點我方場上公司使用專屬技能。每回合結束後雙方公司自動創造收益，先累積 100 兆美元者獲勝。年度淨利為示意值，遊戲收益經過放大。")};$("restartButton").onclick=()=>{if(confirm("重新開始遊戲？"))start()};$("resultHome").onclick=()=>{gameId++;$("result").classList.add("hidden");show("home")};$("closeDetail").onclick=closeDetail;$("detailBack").onclick=closeDetail;$("detail").onclick=e=>{if(e.target===$("detail"))closeDetail()};$("detailAction").onclick=()=>{
+function cpuTurn(){if(phase!=="cpu"||finished)return;cpuMoney+=collect(theirs);if(winCheck())return;{const drawn=pull();if(drawn){const c={...drawn,mult:1};if(theirs.length<3)theirs.push(c);else theirs[Math.floor(Math.random()*theirs.length)]=c;special(c,"cpu")}}if(winCheck())return;money+=collect(mine);if(winCheck())return;turn++;acted=false;phase="player";if(hand.length<7){const c=pull();if(c)hand.push(c)}render()}
+$("startButton").onclick=start;$("rulesStart").onclick=start;$("againButton").onclick=start;$("rulesButton").onclick=()=>show("rulesScreen");$("rulesBack").onclick=()=>show("home");$("catalogButton").onclick=()=>{show("catalogScreen");catalog()};$("catalogBack").onclick=()=>show("home");$("homeButton").onclick=()=>{if(!$("game").hidden&&!finished&&!confirm("確定離開這局遊戲？"))return;gameId++;show("home")};$("infoButton").onclick=()=>{alert("百兆富豪戰：每回合部署或替換 1 張公司，出牌立即觸發技能。每回合結束後雙方公司自動創造收益，先累積 100 兆美元者獲勝。年度淨利為示意值，遊戲收益經過放大。")};$("restartButton").onclick=()=>{if(confirm("重新開始遊戲？"))start()};$("resultHome").onclick=()=>{gameId++;$("result").classList.add("hidden");show("home")};$("closeDetail").onclick=closeDetail;$("detailBack").onclick=closeDetail;$("detail").onclick=e=>{if(e.target===$("detail"))closeDetail()};$("detailAction").onclick=()=>{
  if(!detailCard)return;
  const c=detailCard,z=detailZone;closeDetail();
  if(z==="hand"){selected=c.id;if(phase==="player"&&!acted){deploy()}else render()}
