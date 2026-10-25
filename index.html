@@ -454,6 +454,17 @@ body>.swipe-zoom-preview{
 body:has(>.swipe-zoom-preview) #game .fan .duel-card.dragging{
  opacity:.3!important;
 }
+</style><style>
+.tap-zoom-overlay{position:fixed;inset:0;z-index:2147483647;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(3,9,25,.76);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:16px;animation:tapZoomFade .16s ease-out}
+.tap-zoom-card{width:min(56vw,230px);height:auto;aspect-ratio:5/7;display:flex;align-items:center;justify-content:center;animation:tapZoomIn .2s ease-out}
+.tap-zoom-card .duel-card.swipe-zoom-preview{position:relative!important;left:auto!important;top:auto!important;transform:none!important;width:100%!important;max-width:none!important;max-height:none!important;height:100%!important;opacity:1!important;pointer-events:none!important}
+.tap-zoom-card .duel-card .card-company{font-size:clamp(.8rem,3vw,1.05rem)!important}
+.tap-zoom-card .duel-card .card-skill b{font-size:clamp(.7rem,2.7vw,.9rem)!important}
+.tap-zoom-card .duel-card .card-skill span{font-size:clamp(.65rem,2.4vw,.83rem)!important}
+.tap-zoom-hint{color:#f6e6bd;text-align:center;font-size:.78rem;text-shadow:0 1px 8px #000}
+@keyframes tapZoomIn{from{opacity:0;transform:translateY(35px) scale(.82)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes tapZoomFade{from{opacity:0}to{opacity:1}}
+@media(max-height:550px){.tap-zoom-card{width:min(30vw,175px)}.tap-zoom-hint{font-size:.65rem}}
 </style></head><body><div class="app"><header class="top"><div class="brand">💰 華爾街王者 <small>百兆富豪戰 · 全球百大企業</small></div><button class="btn outline" id="homeButton">首頁</button></header>
 <section class="screen" id="home"><div class="hero"><div>🏆 全球百大企業卡牌競賽</div><h1>百兆富豪戰</h1><div class="big">目標 $100 兆</div><p>招募世界級企業、出牌立即發動技能、替換場上公司來經營你的帝國。<br>比電腦更快累積 100 兆美元！</p><button class="btn primary" id="startButton">🎮 開始遊戲</button><button class="btn" id="rulesButton">📘 玩法教學</button><button class="btn" id="catalogButton">🃏 百大企業圖鑑</button></div><p class="source">卡牌池參考 2026 年全球大型上市公司市值排名；排名會隨市場變動。年度淨利為供遊戲使用的近似示意值，非即時或經審計的最新財報。技能與遊戲收益為虛構設定。</p></section>
 <section class="screen" id="rulesScreen" hidden><h2>📘 三步學會百兆富豪戰</h2><div class="rules"><p><strong>① 抽牌與部署：</strong>開局獲得 3 張手牌。每回合將 1 張手牌往上拖到我方空格部署，或拖到既有公司上直接替換；最多同時擁有 3 家企業。出牌立即觸發該公司的專屬技能。</p><p><strong>② 賺錢與技能：</strong>每回合結算時，場上所有公司自動帶來收益。每張公司卡有獨特技能；選擇場上公司可使用技能，或部署新公司，兩者每回合只能選一個，完成後自動換電腦。</p><p><strong>③ 勝利：</strong>玩家與電腦輪流經營，誰先累積到 <strong>100 兆美元</strong> 就贏！</p><p>公司卡顯示年度淨利示意值（億美元）；遊戲每回合收益經過放大與平衡，讓對局能在合理時間結束。</p></div><button class="btn primary" id="rulesStart">開始遊戲 →</button><button class="btn" id="rulesBack">返回首頁</button></section>
@@ -563,8 +574,20 @@ el.addEventListener("pointerup",e=>{
  }
 },{passive:true});
 el.addEventListener("pointercancel",()=>{clearPreview();el.style.removeProperty("--drag-x");el.style.removeProperty("--drag-y");el.classList.remove("dragging");document.querySelectorAll(".drop-ready,.drop-hover").forEach(x=>x.classList.remove("drop-ready","drop-hover"))});
-el.onclick=()=>{if(swiped||Date.now()<(window.suppressCardClickUntil||0))return;if(zone==="hand"){selected=id;render();openDetail(c,zone)}else openDetail(c,zone)};
+el.onclick=()=>{if(swiped||Date.now()<(window.suppressCardClickUntil||0))return;if(zone==="hand"){selected=id;showTapPreview(c)}else openDetail(c,zone)};
 });}
+function showTapPreview(c){
+ const existing=document.querySelector(".tap-zoom-overlay");if(existing)existing.remove();
+ const overlay=document.createElement("div");overlay.className="tap-zoom-overlay";
+ const preview=document.createElement("div");preview.className="tap-zoom-card";
+ preview.innerHTML=cardHTML(c,"preview");
+ const card=preview.querySelector(".duel-card");
+ if(card){card.classList.add("swipe-zoom-preview");card.style.setProperty("--zoom-rise","0px")}
+ const hint=document.createElement("div");hint.className="tap-zoom-hint";hint.textContent="點擊空白處返回 · 查看放大卡牌";
+ overlay.append(preview,hint);document.body.appendChild(overlay);
+ overlay.addEventListener("click",()=>overlay.remove());
+ preview.addEventListener("click",e=>e.stopPropagation());
+}
 function openDetail(c,zone){detailCard=c;detailZone=zone;$("detailLogo").src="https://www.google.com/s2/favicons?domain="+encodeURIComponent(c.domain)+"&sz=128";$("detailArt").textContent=c.emoji;$("detailName").textContent=c.name;$("detailMeta").textContent="市值榜參考 #"+c.id+" · "+c.country+" · "+c.sector;$("detailProfit").innerHTML="<b>💵 年度淨利示意值</b><div>約 "+c.profit+" 億美元 / 年</div><small>遊戲每回合收益："+income((zone==="my"?mine:zone==="cpu"?theirs:hand).find(x=>x.id===c.id)||c).toFixed(2)+" 兆美元（遊戲化放大）</small>";$("detailSkill").innerHTML="<b>✨ 專屬技能："+skillSpec(c).name+"</b><div>"+skillSpec(c).desc+"</div>";$("detailAction").textContent=zone==="my"?"查看完畢":zone==="hand"?"⬆ 出牌並觸發技能":"返回戰場";$("detailAction").disabled=(zone==="hand"&&(acted||phase!=="player"));$("detail").classList.remove("hidden")}
 function closeDetail(){$("detail").classList.add("hidden");detailCard=null;detailZone=null}
 function deploy(slot=null){
