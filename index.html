@@ -753,7 +753,7 @@ function cpuTurn(token){
    if(token!==gameId||finished)return;
    hideSettlement();if(winCheck())return;
    turn++;acted=false;refreshedThisTurn=false;phase="player";
-   if(hand.length<7){const c=pull();if(c)hand.push(c)}
+   while(hand.length<3){const c=pull();if(!c)break;hand.push(c)}
    render();
   },850);
  },850);
