@@ -689,6 +689,27 @@ body>.swipe-zoom-preview{display:none!important}
 #game .annual-ledger .versus{flex:0 0 auto!important}
 #game .annual-side{flex-shrink:1!important}
 @media(max-height:700px){#game .annual-ledger>.opponent-side,#game .annual-ledger>.player-side{flex-basis:21%!important}#game .annual-ledger>.hand-area{flex-basis:58%!important}#game .annual-ledger>.hand-area .fan .duel-card{max-height:29dvh!important}}
+</style><style>
+/* Reference layout: compact opponent summary, large centered pick, compact player summary. */
+#game .annual-ledger{gap:7px!important;padding:4px 9px!important;justify-content:space-between!important}
+#game .annual-ledger>.opponent-side,#game .annual-ledger>.player-side{flex:0 0 22%!important;max-height:22%!important;min-height:0!important;align-items:stretch!important;justify-content:center!important;padding:7px 10px!important;border-radius:14px!important;background:linear-gradient(135deg,#1d344e,#203a53)!important}
+#game .annual-ledger>.hand-area{flex:1 1 52%!important;min-height:0!important;border:1.5px solid #8ca1bb!important;border-radius:15px!important;background:linear-gradient(155deg,#192c47,#1c3753)!important;padding:7px 8px!important;justify-content:space-between!important}
+#game .annual-ledger>.hand-area .hand-title{display:flex!important;justify-content:center!important;align-items:center!important;flex-wrap:wrap!important;gap:5px!important;font-size:clamp(.84rem,3vw,1.06rem)!important;text-align:center!important;font-weight:900!important}
+#game .annual-ledger>.hand-area .hand-controls{display:flex!important;align-items:center!important;gap:5px!important}
+#game .annual-ledger>.hand-area .fan{flex:1 1 auto!important;min-height:0!important;display:flex!important;justify-content:center!important;align-items:center!important;gap:clamp(4px,1.8vw,10px)!important;padding:4px 0!important;overflow:visible!important}
+#game .annual-ledger>.hand-area .fan .duel-card{position:relative!important;flex:0 1 auto!important;transform:none!important;width:auto!important;max-width:calc((100% - 22px)/3)!important;height:auto!important;max-height:100%!important;aspect-ratio:5/7!important;align-self:center!important}
+#game .annual-ledger>.hand-area .message{font-size:clamp(.68rem,2.3vw,.84rem)!important;line-height:1.25!important;padding:3px!important;color:#d7e3ef!important}
+#game .annual-ledger>.versus{order:0!important;flex:0 0 auto!important;padding:0!important;margin:0!important;font-size:.72rem!important;text-align:center!important}
+#game .annual-side .ledger-heading{justify-content:center!important;text-align:center!important;gap:8px!important;font-size:clamp(.83rem,3vw,1.08rem)!important}
+#game .annual-side .ledger-heading span{font-size:.61rem!important}
+#game .annual-side .ledger-money{padding:0 3px!important}
+#game .annual-side .ledger-money strong{font-size:clamp(1rem,4vw,1.4rem)!important}
+#game .annual-side .ledger-rate{font-size:.7rem!important;text-align:center!important}
+#game .annual-side .year-card-history{min-height:22px!important;flex:0 1 auto!important;max-height:45px!important;overflow-x:auto!important}
+#game .annual-side .year-card-history .portfolio-chip{min-width:93px!important;width:93px!important;max-width:93px!important}
+#game .annual-side>.track{display:none!important}
+#game .foot{min-height:0!important;flex:0 0 auto!important}
+@media(max-height:730px){#game .annual-ledger{gap:4px!important}#game .annual-ledger>.opponent-side,#game .annual-ledger>.player-side{flex-basis:21%!important;max-height:21%!important;padding:4px 8px!important}#game .annual-ledger>.hand-area{flex-basis:55%!important;padding:4px!important}#game .annual-side .year-card-history{max-height:34px!important}}
 </style></head><body><div class="app"><header class="top"><div class="brand">💰 華爾街王者 <small>百兆富豪戰 · 全球百大企業</small></div><button class="btn outline" id="homeButton">首頁</button></header>
 <section class="screen" id="home"><div class="hero"><div>🏆 全球百大企業卡牌競賽</div><h1>百兆富豪戰</h1><div class="big">目標 $100 兆</div><p>招募世界級企業、出牌立即發動技能、替換場上公司來經營你的帝國。<br>比電腦更快累積 100 兆美元！</p><button class="btn primary" id="startButton">🎮 開始遊戲</button><button class="btn" id="rulesButton">📘 玩法教學</button><button class="btn" id="catalogButton">🃏 百大企業圖鑑</button></div><p class="source">卡牌池參考 2026 年全球大型上市公司市值排名；排名會隨市場變動。年度淨利為供遊戲使用的近似示意值，非即時或經審計的最新財報。技能與遊戲收益為虛構設定。</p></section>
 <section class="screen" id="rulesScreen" hidden><h2>📘 三步學會百兆富豪戰</h2><div class="rules"><p><strong>遊戲規則：</strong>每一年從 3 張手牌中選擇 1 張公司，立即觸發該卡技能，並將公司加入自己的投資組合。選過的公司往後每一年都會持續創造收益，累積的公司不會因為新選牌而失去收益。</p><p>選牌後自動進行雙方年度收益結算，再獲得新的 3 張手牌。誰先累積到 <strong>100 兆美元</strong> 就獲勝！每年可刷新手牌一次。</p></div><button class="btn primary" id="rulesStart">開始遊戲 →</button><button class="btn" id="rulesBack">返回首頁</button></section>
@@ -702,7 +723,8 @@ body>.swipe-zoom-preview{display:none!important}
   <div class="track"><div class="fill" id="cpuBar"></div></div>
   <div class="year-card-history" id="cpuBoard"></div>
  </div>
- <div class="versus" id="prompt">第 1 年｜選擇公司</div><div class="hand-area"><div class="hand-title"><span>🃏 中間｜今年隨機 3 張手牌</span><span class="hand-controls"><span class="pill" id="handCount">3 張</span><button type="button" id="refreshHand" class="refresh-hand-btn">🔄 換牌</button></span></div><div class="fan" id="hand"></div><div class="message" id="message">選 1 張 → 對手選牌 → 點擊結算 → 點擊進入下一年</div></div>
+ <div class="hand-area"><div class="hand-title"><span>🃏 中間｜今年三選一</span><span class="hand-controls"><span class="pill" id="handCount">3 張</span><button type="button" id="refreshHand" class="refresh-hand-btn">🔄 換牌</button></span></div><div class="fan" id="hand"></div><div class="message" id="message">選 1 張 → 對手選牌 → 點擊結算 → 點擊進入下一年</div></div>
+<div class="versus" id="prompt">第 1 年｜選擇公司</div>
 <div class="annual-side player-side">
   <div class="ledger-heading">🧑 下方｜我的公司 <span id="mySlots">累積 0 家</span></div>
   <div class="ledger-money"><span>累積財富</span><strong id="myMoney">$0.0 兆</strong></div>
@@ -786,7 +808,7 @@ function portfolioHTML(arr,zone){
  return arr.map((c,i)=>'<button type="button" class="portfolio-chip" data-id="'+c.id+'" data-zone="'+zone+'" title="'+c.name+'"><span class="portfolio-chip-year">第 '+(i+1)+' 年</span><span class="portfolio-chip-name">'+c.name+'</span><span class="portfolio-chip-income">每年 +'+income(c).toFixed(1)+' 兆</span></button>').join("");
 }
 function boardHTML(arr,zone){return Array.from({length:3},(_,i)=>arr[i]?cardHTML(arr[i],zone):'<div class="empty" data-slot="'+i+'">＋ 空位</div>').join("")}
-function render(){if($("game").hidden)return;const refreshButton=$("refreshHand");refreshButton.disabled=phase!=="player"||finished||refreshedThisTurn||acted||!hand.length;refreshButton.textContent=refreshedThisTurn?"✓ 本年已刷新":"🔄 刷新手牌 1/1";$("myMoney").textContent=format(money);$("cpuMoney").textContent=format(cpuMoney);$("myBar").style.width=Math.min(100,money)+"%";$("cpuBar").style.width=Math.min(100,cpuMoney)+"%";$("myRate").textContent="+"+totalIncome(mine).toFixed(1)+" 兆";$("cpuRate").textContent="+"+totalIncome(theirs).toFixed(1)+" 兆";$("turn").textContent="第 "+turn+" 年";$("phase").textContent=phase==="player"?"🟢 選擇今年的公司":"🤖 對手選牌中";$("mySlots").textContent="累積 "+mine.length+" 家";$("cpuSlots").textContent="累積 "+theirs.length+" 家";$("myBoard").innerHTML=portfolioHTML(mine,"my");$("cpuBoard").innerHTML=portfolioHTML(theirs,"cpu");$("hand").innerHTML=hand.map((c,i)=>cardHTML(c,"hand",i,hand.length)).join("");$("handCount").textContent=hand.length+" 張";$("prompt").textContent="第 "+turn+" 年｜"+(phase==="player"?"選擇公司":"對手選牌／年度結算");$("message").textContent="選 1 張 → 對手選牌 → 點擊結算 → 點擊進入下一年";document.querySelectorAll(".portfolio-chip").forEach(el=>{el.onclick=()=>showTapPreview(companies[Number(el.dataset.id)-1])});document.querySelectorAll(".company").forEach(el=>{
+function render(){if($("game").hidden)return;const refreshButton=$("refreshHand");refreshButton.disabled=phase!=="player"||finished||refreshedThisTurn||acted||!hand.length;refreshButton.textContent=refreshedThisTurn?"✓ 本年已刷新":"🔄 刷新手牌 1/1";$("myMoney").textContent=format(money);$("cpuMoney").textContent=format(cpuMoney);$("myBar").style.width=Math.min(100,money)+"%";$("cpuBar").style.width=Math.min(100,cpuMoney)+"%";$("myRate").textContent="+"+totalIncome(mine).toFixed(1)+" 兆";$("cpuRate").textContent="+"+totalIncome(theirs).toFixed(1)+" 兆";$("turn").textContent="第 "+turn+" 年";$("phase").textContent=phase==="player"?"🟢 選擇今年的公司":"🤖 對手選牌中";$("mySlots").textContent="累積 "+mine.length+" 家";$("cpuSlots").textContent="累積 "+theirs.length+" 家";$("myBoard").innerHTML=portfolioHTML(mine,"my");$("cpuBoard").innerHTML=portfolioHTML(theirs,"cpu");$("hand").innerHTML=hand.map((c,i)=>cardHTML(c,"hand",i,hand.length)).join("");$("handCount").textContent=hand.length+" 張";$("prompt").textContent="第 "+turn+" 年｜"+(phase==="player"?"選擇公司":"對手選牌／年度結算");$("message").textContent="點一下放大，再點一下顯示確認／取消";document.querySelectorAll(".portfolio-chip").forEach(el=>{el.onclick=()=>showTapPreview(companies[Number(el.dataset.id)-1])});document.querySelectorAll(".company").forEach(el=>{
 const id=+el.dataset.id,zone=el.dataset.zone,c=companies[id-1];
 let startY=0,startX=0,swiped=false,dragging=false,scrollGesture=false,preview=null;
  const clearPreview=()=>{if(preview){preview.remove();preview=null}el.classList.remove("drag-source")};
