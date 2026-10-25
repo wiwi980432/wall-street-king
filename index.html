@@ -710,6 +710,19 @@ body>.swipe-zoom-preview{display:none!important}
 #game .annual-side>.track{display:none!important}
 #game .foot{min-height:0!important;flex:0 0 auto!important}
 @media(max-height:730px){#game .annual-ledger{gap:4px!important}#game .annual-ledger>.opponent-side,#game .annual-ledger>.player-side{flex-basis:21%!important;max-height:21%!important;padding:4px 8px!important}#game .annual-ledger>.hand-area{flex-basis:55%!important;padding:4px!important}#game .annual-side .year-card-history{max-height:34px!important}}
+</style><style>
+/* Arrow-requested final placement: opponent TOP, selection CENTER, player BOTTOM. */
+#game .annual-ledger{display:flex!important;flex-direction:column!important;justify-content:stretch!important;gap:7px!important;flex:1 1 auto!important;min-height:0!important}
+#game .annual-ledger>.opponent-side{order:1!important;flex:0 0 20%!important;max-height:20%!important;min-height:0!important}
+#game .annual-ledger>.hand-area{order:2!important;flex:1 1 55%!important;min-height:0!important;max-height:none!important;justify-content:center!important}
+#game .annual-ledger>.versus{order:3!important;flex:0 0 auto!important;line-height:1.1!important}
+#game .annual-ledger>.player-side{order:4!important;flex:0 0 20%!important;max-height:20%!important;min-height:0!important}
+#game .annual-ledger>.hand-area .fan{flex:1 1 auto!important;min-height:0!important;align-items:center!important;justify-content:center!important}
+#game .annual-ledger>.hand-area .fan .duel-card{height:auto!important;max-height:min(100%,34dvh)!important;max-width:calc((100% - 18px)/3)!important;aspect-ratio:5/7!important}
+#game .annual-ledger>.hand-area .hand-title{flex:0 0 auto!important}
+#game .annual-ledger>.hand-area .message{flex:0 0 auto!important}
+#game .annual-ledger>.opponent-side .year-card-history,#game .annual-ledger>.player-side .year-card-history{flex:1 1 auto!important;min-height:19px!important}
+@media(max-height:740px){#game .annual-ledger>.opponent-side,#game .annual-ledger>.player-side{flex-basis:19%!important;max-height:19%!important}#game .annual-ledger>.hand-area{flex-basis:57%!important}#game .annual-ledger>.hand-area .fan .duel-card{max-height:min(100%,30dvh)!important}}
 </style></head><body><div class="app"><header class="top"><div class="brand">💰 華爾街王者 <small>百兆富豪戰 · 全球百大企業</small></div><button class="btn outline" id="homeButton">首頁</button></header>
 <section class="screen" id="home"><div class="hero"><div>🏆 全球百大企業卡牌競賽</div><h1>百兆富豪戰</h1><div class="big">目標 $100 兆</div><p>招募世界級企業、出牌立即發動技能、替換場上公司來經營你的帝國。<br>比電腦更快累積 100 兆美元！</p><button class="btn primary" id="startButton">🎮 開始遊戲</button><button class="btn" id="rulesButton">📘 玩法教學</button><button class="btn" id="catalogButton">🃏 百大企業圖鑑</button></div><p class="source">卡牌池參考 2026 年全球大型上市公司市值排名；排名會隨市場變動。年度淨利為供遊戲使用的近似示意值，非即時或經審計的最新財報。技能與遊戲收益為虛構設定。</p></section>
 <section class="screen" id="rulesScreen" hidden><h2>📘 三步學會百兆富豪戰</h2><div class="rules"><p><strong>遊戲規則：</strong>每一年從 3 張手牌中選擇 1 張公司，立即觸發該卡技能，並將公司加入自己的投資組合。選過的公司往後每一年都會持續創造收益，累積的公司不會因為新選牌而失去收益。</p><p>選牌後自動進行雙方年度收益結算，再獲得新的 3 張手牌。誰先累積到 <strong>100 兆美元</strong> 就獲勝！每年可刷新手牌一次。</p></div><button class="btn primary" id="rulesStart">開始遊戲 →</button><button class="btn" id="rulesBack">返回首頁</button></section>
