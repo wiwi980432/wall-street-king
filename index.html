@@ -676,22 +676,34 @@ body>.swipe-zoom-preview{display:none!important}
 .tap-zoom-overlay:has(.tap-select-actions) .tap-zoom-hint{position:relative!important;inset:auto!important;bottom:auto!important;margin-top:8px!important;order:1!important}
 .tap-zoom-overlay:has(.tap-select-actions) .tap-select-actions{order:2!important}
 .tap-zoom-overlay:has(.tap-select-actions) .tap-zoom-card{flex:0 1 auto!important}
+</style><style>
+/* Main flow: CPU at top, three-card choice in the middle, player at bottom. */
+#game .annual-ledger{display:flex!important;flex-direction:column!important;flex:1 1 auto!important;min-height:0!important;gap:5px!important;padding:0 8px!important}
+#game .annual-ledger>.opponent-side{flex:0 1 23%!important;min-height:0!important}
+#game .annual-ledger>.player-side{flex:0 1 23%!important;min-height:0!important}
+#game .annual-ledger>.hand-area{flex:1 1 54%!important;min-height:0!important;display:flex!important;flex-direction:column!important;padding:4px 6px!important;border:1px solid #5c829d!important;border-radius:12px!important;background:#142b43!important}
+#game .annual-ledger>.hand-area .fan{display:flex!important;flex:1 1 auto!important;min-height:0!important;align-items:center!important;justify-content:space-evenly!important;gap:5px!important;padding:3px!important;overflow:visible!important}
+#game .annual-ledger>.hand-area .fan .duel-card{flex:0 1 auto!important;width:auto!important;max-width:calc((100% - 14px)/3)!important;height:min(100%,32dvh)!important;max-height:32dvh!important;aspect-ratio:5/7!important;transform:none!important}
+#game .annual-ledger>.hand-area .hand-title{flex:0 0 auto!important}
+#game .annual-ledger>.hand-area .message{flex:0 0 auto!important}
+#game .annual-ledger .versus{flex:0 0 auto!important}
+#game .annual-side{flex-shrink:1!important}
+@media(max-height:700px){#game .annual-ledger>.opponent-side,#game .annual-ledger>.player-side{flex-basis:21%!important}#game .annual-ledger>.hand-area{flex-basis:58%!important}#game .annual-ledger>.hand-area .fan .duel-card{max-height:29dvh!important}}
 </style></head><body><div class="app"><header class="top"><div class="brand">💰 華爾街王者 <small>百兆富豪戰 · 全球百大企業</small></div><button class="btn outline" id="homeButton">首頁</button></header>
 <section class="screen" id="home"><div class="hero"><div>🏆 全球百大企業卡牌競賽</div><h1>百兆富豪戰</h1><div class="big">目標 $100 兆</div><p>招募世界級企業、出牌立即發動技能、替換場上公司來經營你的帝國。<br>比電腦更快累積 100 兆美元！</p><button class="btn primary" id="startButton">🎮 開始遊戲</button><button class="btn" id="rulesButton">📘 玩法教學</button><button class="btn" id="catalogButton">🃏 百大企業圖鑑</button></div><p class="source">卡牌池參考 2026 年全球大型上市公司市值排名；排名會隨市場變動。年度淨利為供遊戲使用的近似示意值，非即時或經審計的最新財報。技能與遊戲收益為虛構設定。</p></section>
 <section class="screen" id="rulesScreen" hidden><h2>📘 三步學會百兆富豪戰</h2><div class="rules"><p><strong>遊戲規則：</strong>每一年從 3 張手牌中選擇 1 張公司，立即觸發該卡技能，並將公司加入自己的投資組合。選過的公司往後每一年都會持續創造收益，累積的公司不會因為新選牌而失去收益。</p><p>選牌後自動進行雙方年度收益結算，再獲得新的 3 張手牌。誰先累積到 <strong>100 兆美元</strong> 就獲勝！每年可刷新手牌一次。</p></div><button class="btn primary" id="rulesStart">開始遊戲 →</button><button class="btn" id="rulesBack">返回首頁</button></section>
 <section class="screen" id="catalogScreen" hidden><h2>🃏 全球百大企業圖鑑 <span class="pill" id="catalogCount">100 家</span></h2><div class="catalog-controls"><input id="search" placeholder="搜尋公司、國家或產業"><button class="btn" id="catalogBack">返回首頁</button></div><div class="catalog" id="catalog"></div><p class="source">排名參考：2026 年大型上市公司市值榜單；卡片年度淨利為近似示意，並非最新正式財報。</p></section>
 <section class="screen" id="game" hidden>
 <div class="turn"><span id="turn">第 1 年</span><b id="phase">選擇今年的公司</b><button class="btn outline" id="infoButton">？規則</button></div>
-<div class="annual-ledger">
- <div class="annual-side opponent-side">
+<div class="annual-ledger"><div class="annual-side opponent-side">
   <div class="ledger-heading">🤖 上方｜對手 <span id="cpuSlots">累積 0 家</span></div>
   <div class="ledger-money"><span>累積財富</span><strong id="cpuMoney">$0.0 兆</strong></div>
   <div class="ledger-rate">每年總收益：<span id="cpuRate">+0.0 兆</span></div>
   <div class="track"><div class="fill" id="cpuBar"></div></div>
   <div class="year-card-history" id="cpuBoard"></div>
  </div>
- <div class="versus" id="prompt">第 1 年｜選擇公司</div>
- <div class="annual-side player-side">
+ <div class="versus" id="prompt">第 1 年｜選擇公司</div><div class="hand-area"><div class="hand-title"><span>🃏 中間｜今年隨機 3 張手牌</span><span class="hand-controls"><span class="pill" id="handCount">3 張</span><button type="button" id="refreshHand" class="refresh-hand-btn">🔄 換牌</button></span></div><div class="fan" id="hand"></div><div class="message" id="message">選 1 張 → 對手選牌 → 點擊結算 → 點擊進入下一年</div></div>
+<div class="annual-side player-side">
   <div class="ledger-heading">🧑 下方｜我的公司 <span id="mySlots">累積 0 家</span></div>
   <div class="ledger-money"><span>累積財富</span><strong id="myMoney">$0.0 兆</strong></div>
   <div class="ledger-rate">每年總收益：<span id="myRate">+0.0 兆</span></div>
@@ -699,7 +711,6 @@ body>.swipe-zoom-preview{display:none!important}
   <div class="year-card-history" id="myBoard"></div>
  </div>
 </div>
-<div class="hand-area"><div class="hand-title"><span>🃏 最下方｜今年隨機 3 張手牌</span><span class="hand-controls"><span class="pill" id="handCount">3 張</span><button type="button" id="refreshHand" class="refresh-hand-btn">🔄 換牌</button></span></div><div class="fan" id="hand"></div><div class="message" id="message">選 1 張 → 對手選牌 → 點擊結算 → 點擊進入下一年</div></div>
 <div class="foot"><button class="btn outline" id="restartButton">重新開始</button></div>
 </section></div>
 <div id="cpuPickReveal" class="cpu-pick-reveal" hidden><div class="cpu-pick-panel"><h2>🤖 對手今年選擇</h2><div id="cpuPickCard"></div><button type="button" id="confirmCpuPick" class="advance-stage-btn">查看年度結算 →</button></div></div><div id="yearSettlement" class="year-settlement" aria-live="polite" hidden><div class="settlement-panel"><div class="settlement-heading">💰 年度收益結算</div><div id="settlementYear" class="settlement-year"></div><div class="settlement-row cpu"><span>🤖 對手年度收入</span><strong id="settlementCpu">計算中…</strong></div><div class="settlement-row player"><span>🧑 我的年度收入</span><strong id="settlementMine">等待結算…</strong></div><div class="settlement-tip">年度收益已結算</div><button type="button" id="confirmSettlement" class="advance-stage-btn">進入下一年 →</button></div></div><div class="modal hidden" id="detail" role="dialog" aria-modal="true"><div class="sheet"><button class="close" id="closeDetail">✕</button><img id="detailLogo" class="logo" alt="公司 Logo"><div class="art" id="detailArt"></div><h2 id="detailName"></h2><div class="meta" id="detailMeta"></div><div class="feature" id="detailProfit"></div><div class="feature" id="detailSkill"></div><button class="btn primary" id="detailAction">確認</button><button class="btn outline" id="detailBack">返回遊戲</button></div></div>
