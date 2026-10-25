@@ -18,6 +18,27 @@
 </style><style>
 #myBoard .drop-hover{border:3px solid #ffce57!important;background:#f7d88835!important;box-shadow:0 0 0 4px #ffe49a55,0 0 24px #f9d274aa!important;transform:scale(1.035)}
 #hand .company.dragging{transition:none!important}
+</style><style>
+.company.duel-card{padding:3px!important;overflow:hidden;border:2px solid var(--card-light)!important;border-radius:10px!important;background:linear-gradient(135deg,var(--card-light),var(--card-dark) 18%,var(--card-dark) 82%,var(--card-light))!important;color:#fff!important;box-shadow:0 4px 11px #0008,inset 0 0 0 1px #ffffff6b!important;justify-content:stretch!important;gap:0!important}
+.duel-card .card-inner{display:flex;flex-direction:column;align-items:stretch;gap:3px;width:100%;height:100%;padding:4px 3px;background:linear-gradient(160deg,#ffffff18,#00000024);border:1px solid #ffffff65;border-radius:6px;min-height:0}
+.duel-card .card-heading{display:flex;align-items:flex-start;gap:2px;justify-content:space-between;min-height:20px}
+.duel-card .card-company{font-weight:950;font-size:clamp(.58rem,1.8vw,.83rem);line-height:1.15;text-shadow:0 1px 2px #000b;overflow-wrap:anywhere;text-align:left}
+.duel-card .card-rank{font-size:.52rem;opacity:.85;flex-shrink:0}
+.duel-card .card-type{font-size:.56rem;font-weight:800;color:#fff1c5;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.duel-card .card-art{position:relative;display:flex;align-items:center;justify-content:center;gap:5px;flex:1;min-height:26px;border:2px ridge #ffdf9f;border-radius:3px;background:radial-gradient(ellipse at 40% 30%,#ffffffaa,#ffffff25 30%,#070e3070 78%),repeating-linear-gradient(135deg,#ffffff0c 0 5px,#0000000c 5px 10px)}
+.duel-card .card-emoji{font-size:clamp(1.2rem,3vw,2.1rem);filter:drop-shadow(0 2px 2px #0009)}
+.duel-card .card-logo{width:clamp(16px,3vw,30px);height:clamp(16px,3vw,30px);object-fit:contain;border-radius:4px;background:white;padding:2px}
+.duel-card .card-spark{font-size:.55rem;color:#ffe4a6}
+.duel-card .card-skill{display:flex;flex-direction:column;gap:2px;text-align:left;padding:4px;background:#fff1cf;color:#30251c;border:1px solid #c9a56d;border-radius:3px;min-height:38px}
+.duel-card .card-skill b{font-size:clamp(.52rem,1.5vw,.69rem);line-height:1.1}
+.duel-card .card-skill span{font-size:clamp(.52rem,1.45vw,.68rem);line-height:1.18;font-weight:700;overflow-wrap:anywhere}
+.duel-card .card-footer{display:flex;justify-content:space-between;align-items:center;gap:2px;font-weight:950;font-size:clamp(.56rem,1.55vw,.73rem);white-space:nowrap}
+.duel-card .card-footer span:last-child{font-size:.52rem;color:#fff0c0}
+.duel-card::after{display:none!important}
+#myBoard .duel-card.drop-hover{border:3px solid #ffda66!important;box-shadow:0 0 0 4px #ffe49a66,0 0 24px #f9d274aa!important}
+.fan .duel-card{height:174px!important}.slots{min-height:178px}.slots>.duel-card,.slots>.empty{min-height:178px}
+@media(max-width:520px){.duel-card .card-inner{padding:3px 2px;gap:2px}.duel-card .card-heading{min-height:16px}.duel-card .card-company{font-size:.57rem}.duel-card .card-type{font-size:.5rem}.duel-card .card-skill{padding:3px 2px;min-height:40px}.duel-card .card-skill b,.duel-card .card-skill span{font-size:.5rem}.duel-card .card-footer{font-size:.54rem}.duel-card .card-footer span:last-child{font-size:.46rem}.slots{min-height:155px}.slots>.duel-card,.slots>.empty{min-height:155px}.fan .duel-card{height:150px!important}}
+@media(max-height:710px){.slots{min-height:137px}.slots>.duel-card,.slots>.empty{min-height:137px}.fan .duel-card{height:138px!important}.duel-card .card-art{min-height:17px}.duel-card .card-emoji{font-size:1.1rem}}
 </style></head><body><div class="app"><header class="top"><div class="brand">💰 華爾街王者 <small>百兆富豪戰 · 全球百大企業</small></div><button class="btn outline" id="homeButton">首頁</button></header>
 <section class="screen" id="home"><div class="hero"><div>🏆 全球百大企業卡牌競賽</div><h1>百兆富豪戰</h1><div class="big">目標 $100 兆</div><p>招募世界級企業、出牌立即發動技能、替換場上公司來經營你的帝國。<br>比電腦更快累積 100 兆美元！</p><button class="btn primary" id="startButton">🎮 開始遊戲</button><button class="btn" id="rulesButton">📘 玩法教學</button><button class="btn" id="catalogButton">🃏 百大企業圖鑑</button></div><p class="source">卡牌池參考 2026 年全球大型上市公司市值排名；排名會隨市場變動。年度淨利為供遊戲使用的近似示意值，非即時或經審計的最新財報。技能與遊戲收益為虛構設定。</p></section>
 <section class="screen" id="rulesScreen" hidden><h2>📘 三步學會百兆富豪戰</h2><div class="rules"><p><strong>① 抽牌與部署：</strong>開局獲得 5 張手牌。每回合將 1 張手牌往上拖到我方空格部署，或拖到既有公司上直接替換；最多同時擁有 3 家企業。出牌立即觸發該公司的專屬技能。</p><p><strong>② 賺錢與技能：</strong>每回合結算時，場上所有公司自動帶來收益。每張公司卡有獨特技能；選擇場上公司可使用技能，或部署新公司，兩者每回合只能選一個，完成後自動換電腦。</p><p><strong>③ 勝利：</strong>玩家與電腦輪流經營，誰先累積到 <strong>100 兆美元</strong> 就贏！</p><p>公司卡顯示年度淨利示意值（億美元）；遊戲每回合收益經過放大與平衡，讓對局能在合理時間結束。</p></div><button class="btn primary" id="rulesStart">開始遊戲 →</button><button class="btn" id="rulesBack">返回首頁</button></section>
@@ -39,7 +60,18 @@ function pull(){if(!deck.length)deck=shuffled().filter(c=>![...hand,...mine,...t
 function format(v){return "$"+Math.max(0,v).toFixed(1)+" 兆"}
 function income(c){return Math.max(.5,c.profit*PROFIT_SCALE)*(c.mult||1)}
 function totalIncome(arr){return arr.reduce((s,c)=>s+income(c),0)}
-function cardHTML(c,zone,i=0,n=1){const offset=i-(n-1)/2;return '<button class="company '+(selected===c.id&&zone==="hand"?"selected ":"")+(zone==="my"&&!acted?"available":"")+'" data-zone="'+zone+'" data-id="'+c.id+'" style="--offset:'+offset+';--dist:'+Math.abs(offset)+'"><span class="rank">#'+c.id+'</span><img class="logo" loading="lazy" alt="" src="https://www.google.com/s2/favicons?domain='+encodeURIComponent(c.domain)+'&sz=64" onerror="this.style.display=\'none\'"><span class="symbol">'+c.emoji+'</span><span class="name">'+c.name+'</span><span class="profit">+'+income(c).toFixed(1)+' 兆/回合</span></button>'}
+const INDUSTRY_COLORS={"晶片":["#45328b","#a999ff"],"消費科技":["#255b8c","#76caff"],"網路科技":["#246c78","#6ee4ec"],"軟體雲端":["#305b9a","#8ebaff"],"電商雲端":["#825025","#f8bd75"],"金融":["#80611c","#f4d47d"],"醫療":["#24694c","#84e6b0"],"汽車":["#8e3546","#ff9aa7"],"能源":["#9a4f25","#ffc07a"],"零售":["#806031","#eac38c"],"消費品牌":["#8d3d6a","#f9a1cc"],"工業":["#526377","#c3ceda"],"娛樂":["#703e96","#dda9ff"],"原物料":["#536b2d","#cce685"],"電信":["#265e8d","#8cd8ff"],"不動產":["#497258","#abe5b2"]};
+const shortSkill=c=>["立即獲得 3 回合收益","本公司收益永久 +60%","下回合全公司收益 ×2","獲得對手財富 6%","本公司收益永久 +50%","立即獲得 5 兆","獲得 3 兆、收益 +20%","立即獲得 4 倍收益","獲得財富 10% 獎金","全公司收益永久 +12%"][(c.id-1)%10];
+function cardHTML(c,zone,i=0,n=1){
+ const offset=i-(n-1)/2,colors=INDUSTRY_COLORS[c.sector]||["#5a5870","#aab2cc"];
+ const logo="https://www.google.com/s2/favicons?domain="+encodeURIComponent(c.domain)+"&sz=64";
+ return '<button class="company duel-card '+(selected===c.id&&zone==="hand"?"selected ":"")+(zone==="my"&&!acted?"available":"")+'" data-zone="'+zone+'" data-id="'+c.id+'" style="--offset:'+offset+';--dist:'+Math.abs(offset)+';--card-dark:'+colors[0]+';--card-light:'+colors[1]+'">'
+ +'<span class="card-inner"><span class="card-heading"><span class="card-company">'+c.name+'</span><span class="card-rank">#'+c.id+'</span></span>'
+ +'<span class="card-type">'+c.sector+' · '+c.country+'</span>'
+ +'<span class="card-art"><span class="card-spark">✦</span><span class="card-emoji">'+c.emoji+'</span><img class="card-logo" loading="lazy" alt="" src="'+logo+'"><span class="card-spark">✦</span></span>'
+ +'<span class="card-skill"><b>✧ '+c.skill.split("・").pop()+'</b><span>'+shortSkill(c)+'</span></span>'
+ +'<span class="card-footer"><span>💰 +'+income(c).toFixed(1)+' 兆</span><span>每回合</span></span></span></button>'
+}
 function boardHTML(arr,zone){return Array.from({length:3},(_,i)=>arr[i]?cardHTML(arr[i],zone):'<div class="empty" data-slot="'+i+'">＋ 空位</div>').join("")}
 function render(){if($("game").hidden)return;$("myMoney").textContent=format(money);$("cpuMoney").textContent=format(cpuMoney);$("myBar").style.width=Math.min(100,money)+"%";$("cpuBar").style.width=Math.min(100,cpuMoney)+"%";$("myRate").textContent="每回合 +"+totalIncome(mine).toFixed(1)+" 兆";$("cpuRate").textContent="每回合 +"+totalIncome(theirs).toFixed(1)+" 兆";$("turn").textContent="第 "+turn+" 回合";$("phase").textContent=phase==="player"?"🟢 你的回合":"🤖 電腦思考中";$("mySlots").textContent=mine.length+" / 3";$("cpuSlots").textContent=theirs.length+" / 3";$("myBoard").innerHTML=boardHTML(mine,"my");$("cpuBoard").innerHTML=boardHTML(theirs,"cpu");$("hand").innerHTML=hand.map((c,i)=>cardHTML(c,"hand",i,hand.length)).join("");$("handCount").textContent=hand.length+" 張";$("prompt").textContent=acted?"✓ 已完成行動，請結束回合":"↑ 拖曳手牌到我方空格或公司上，出牌即發動技能";$("message").textContent=acted?"電腦正在行動":mine.length>=3?"欄位已滿！拖到場上公司即可替換":selected!==null?"將手牌拖到上方空格或公司替換":"拖曳到空格或既有公司，出牌即發動技能";document.querySelectorAll(".company").forEach(el=>{
 const id=+el.dataset.id,zone=el.dataset.zone,c=companies[id-1];
@@ -80,7 +112,7 @@ el.addEventListener("pointerup",e=>{
 el.addEventListener("pointercancel",()=>{el.classList.remove("dragging");document.querySelectorAll(".drop-ready,.drop-hover").forEach(x=>x.classList.remove("drop-ready","drop-hover"))});
 el.onclick=()=>{if(swiped||Date.now()<(window.suppressCardClickUntil||0))return;if(zone==="hand"){selected=id;render();openDetail(c,zone)}else openDetail(c,zone)};
 });}
-function openDetail(c,zone){detailCard=c;detailZone=zone;$("detailLogo").src="https://www.google.com/s2/favicons?domain="+encodeURIComponent(c.domain)+"&sz=128";$("detailArt").textContent=c.emoji;$("detailName").textContent=c.name+" · "+c.ticker;$("detailMeta").textContent="市值榜參考 #"+c.id+" · "+c.country+" · "+c.sector;$("detailProfit").innerHTML="<b>💵 年度淨利示意值</b><div>約 "+c.profit+" 億美元 / 年</div><small>遊戲每回合收益："+income((zone==="my"?mine:zone==="cpu"?theirs:hand).find(x=>x.id===c.id)||c).toFixed(2)+" 兆美元（遊戲化放大）</small>";$("detailSkill").innerHTML="<b>✨ 專屬技能："+c.skill+"</b><div>"+c.skillDesc+"</div>";$("detailAction").textContent=zone==="my"?"查看完畢":zone==="hand"?"⬆ 出牌並觸發技能":"返回戰場";$("detailAction").disabled=(zone==="hand"&&(acted||phase!=="player"));$("detail").classList.remove("hidden")}
+function openDetail(c,zone){detailCard=c;detailZone=zone;$("detailLogo").src="https://www.google.com/s2/favicons?domain="+encodeURIComponent(c.domain)+"&sz=128";$("detailArt").textContent=c.emoji;$("detailName").textContent=c.name;$("detailMeta").textContent="市值榜參考 #"+c.id+" · "+c.country+" · "+c.sector;$("detailProfit").innerHTML="<b>💵 年度淨利示意值</b><div>約 "+c.profit+" 億美元 / 年</div><small>遊戲每回合收益："+income((zone==="my"?mine:zone==="cpu"?theirs:hand).find(x=>x.id===c.id)||c).toFixed(2)+" 兆美元（遊戲化放大）</small>";$("detailSkill").innerHTML="<b>✨ 專屬技能："+c.skill+"</b><div>"+c.skillDesc+"</div>";$("detailAction").textContent=zone==="my"?"查看完畢":zone==="hand"?"⬆ 出牌並觸發技能":"返回戰場";$("detailAction").disabled=(zone==="hand"&&(acted||phase!=="player"));$("detail").classList.remove("hidden")}
 function closeDetail(){$("detail").classList.add("hidden");detailCard=null;detailZone=null}
 function deploy(slot=null){
  if(phase!=="player"||acted||selected===null)return;
@@ -104,5 +136,5 @@ $("startButton").onclick=start;$("rulesStart").onclick=start;$("againButton").on
  const c=detailCard,z=detailZone;closeDetail();
  if(z==="hand"){selected=c.id;if(phase==="player"&&!acted){deploy()}else render()}
 };
-document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDetail()});function catalog(){const q=$("search").value.trim().toLowerCase();const matches=companies.filter(c=>(c.name+" "+c.ticker+" "+c.country+" "+c.sector).toLowerCase().includes(q));$("catalogCount").textContent=matches.length+" / 100";$("catalog").innerHTML=matches.map(c=>cardHTML(c,"catalog")).join("");document.querySelectorAll("#catalog .company").forEach(el=>el.onclick=()=>openDetail(companies[+el.dataset.id-1],"catalog"))}$("search").oninput=catalog;
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDetail()});function catalog(){const q=$("search").value.trim().toLowerCase();const matches=companies.filter(c=>(c.name+" "+c.country+" "+c.sector).toLowerCase().includes(q));$("catalogCount").textContent=matches.length+" / 100";$("catalog").innerHTML=matches.map(c=>cardHTML(c,"catalog")).join("");document.querySelectorAll("#catalog .company").forEach(el=>el.onclick=()=>openDetail(companies[+el.dataset.id-1],"catalog"))}$("search").oninput=catalog;
 </script></body></html>
