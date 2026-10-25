@@ -174,6 +174,17 @@
  #game #cpuBoard>.duel-card,#game #cpuBoard>.empty,
  #game #myBoard>.duel-card,#game #myBoard>.empty{max-height:20dvh!important}
 }
+</style><style>
+/* Illustrated fantasy card art with a dedicated central illustration window. */
+.duel-card .card-art{position:relative;isolation:isolate;overflow:hidden;flex:1 1 auto;min-height:30px;border:2px solid #f5d28a;background:radial-gradient(ellipse at 50% 40%,var(--card-light) 0%,var(--card-dark) 56%,#090d27 100%);box-shadow:inset 0 0 15px #0008,0 0 0 1px #0008}
+.duel-card .art-orbit{position:absolute;width:125%;height:70%;border:2px solid #ffffff88;border-radius:50%;transform:rotate(-25deg);box-shadow:0 0 14px var(--card-light)}
+.duel-card .art-halo{position:absolute;width:64%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#ffffffd9 0%,var(--card-light) 20%,transparent 70%);filter:blur(3px)}
+.duel-card .card-emoji{position:relative;z-index:2;font-size:clamp(1.8rem,5vw,3.6rem)!important;filter:drop-shadow(0 5px 2px #000a) drop-shadow(0 0 9px #ffffff99);transform:rotate(-8deg)}
+.duel-card .card-logo{position:absolute;z-index:3;right:4px;bottom:4px;width:clamp(14px,3vw,25px);height:clamp(14px,3vw,25px);border:1px solid #fff8;box-shadow:0 1px 7px #000a}
+.duel-card .art-stars{position:absolute;z-index:1;left:4px;top:3px;color:#fff6c5;font-size:.6rem;letter-spacing:3px;text-shadow:0 0 8px #fff}
+.duel-card .card-skill{background:linear-gradient(145deg,#fff8de,#f5dfa8);border:2px solid #b98940;box-shadow:inset 0 0 0 1px #fff}
+.duel-card .card-skill b{color:#6a2e19}
+@media(max-width:700px){#game .duel-card .card-emoji{font-size:clamp(1.25rem,5vw,2.6rem)!important}#game .duel-card .card-art{min-height:14px}}
 </style></head><body><div class="app"><header class="top"><div class="brand">💰 華爾街王者 <small>百兆富豪戰 · 全球百大企業</small></div><button class="btn outline" id="homeButton">首頁</button></header>
 <section class="screen" id="home"><div class="hero"><div>🏆 全球百大企業卡牌競賽</div><h1>百兆富豪戰</h1><div class="big">目標 $100 兆</div><p>招募世界級企業、出牌立即發動技能、替換場上公司來經營你的帝國。<br>比電腦更快累積 100 兆美元！</p><button class="btn primary" id="startButton">🎮 開始遊戲</button><button class="btn" id="rulesButton">📘 玩法教學</button><button class="btn" id="catalogButton">🃏 百大企業圖鑑</button></div><p class="source">卡牌池參考 2026 年全球大型上市公司市值排名；排名會隨市場變動。年度淨利為供遊戲使用的近似示意值，非即時或經審計的最新財報。技能與遊戲收益為虛構設定。</p></section>
 <section class="screen" id="rulesScreen" hidden><h2>📘 三步學會百兆富豪戰</h2><div class="rules"><p><strong>① 抽牌與部署：</strong>開局獲得 3 張手牌。每回合將 1 張手牌往上拖到我方空格部署，或拖到既有公司上直接替換；最多同時擁有 3 家企業。出牌立即觸發該公司的專屬技能。</p><p><strong>② 賺錢與技能：</strong>每回合結算時，場上所有公司自動帶來收益。每張公司卡有獨特技能；選擇場上公司可使用技能，或部署新公司，兩者每回合只能選一個，完成後自動換電腦。</p><p><strong>③ 勝利：</strong>玩家與電腦輪流經營，誰先累積到 <strong>100 兆美元</strong> 就贏！</p><p>公司卡顯示年度淨利示意值（億美元）；遊戲每回合收益經過放大與平衡，讓對局能在合理時間結束。</p></div><button class="btn primary" id="rulesStart">開始遊戲 →</button><button class="btn" id="rulesBack">返回首頁</button></section>
@@ -196,15 +207,34 @@ function format(v){return "$"+Math.max(0,v).toFixed(1)+" 兆"}
 function income(c){return Math.max(.5,c.profit*PROFIT_SCALE)*(c.mult||1)}
 function totalIncome(arr){return arr.reduce((s,c)=>s+income(c),0)}
 const INDUSTRY_COLORS={"晶片":["#45328b","#a999ff"],"消費科技":["#255b8c","#76caff"],"網路科技":["#246c78","#6ee4ec"],"軟體雲端":["#305b9a","#8ebaff"],"電商雲端":["#825025","#f8bd75"],"金融":["#80611c","#f4d47d"],"醫療":["#24694c","#84e6b0"],"汽車":["#8e3546","#ff9aa7"],"能源":["#9a4f25","#ffc07a"],"零售":["#806031","#eac38c"],"消費品牌":["#8d3d6a","#f9a1cc"],"工業":["#526377","#c3ceda"],"娛樂":["#703e96","#dda9ff"],"原物料":["#536b2d","#cce685"],"電信":["#265e8d","#8cd8ff"],"不動產":["#497258","#abe5b2"]};
-const shortSkill=c=>["立即獲得 3 回合收益","本公司收益永久 +60%","下回合全公司收益 ×2","獲得對手財富 6%","本公司收益永久 +50%","立即獲得 5 兆","獲得 3 兆、收益 +20%","立即獲得 4 倍收益","獲得財富 10% 獎金","全公司收益永久 +12%"][(c.id-1)%10];
+function skillSpec(c){
+ const k=(c.id-1)%10, tier=Math.floor((c.id-1)/10), p=c.id;
+ const names=["星際紅利","資本覺醒","超頻連鎖","市場收割","成長引擎","黃金契約","複利核心","瞬間爆發","財富共振","產業霸權"];
+ const v=[2+tier*.25,1.25+tier*.055,1.5+tier*.12,2+tier*.45,1.2+tier*.045,2+tier*.55,1+tier*.4,2+tier*.3,4+tier*.7,1.04+tier*.012][k];
+ const fmt=x=>Number(x.toFixed(2));
+ const desc=[
+ "立即獲得本公司 "+fmt(v)+" 回合收益",
+ "本公司每回合收益永久 +"+Math.round((v-1)*100)+"%",
+ "下回合全隊收益 ×"+fmt(v),
+ "取得對手財富 "+fmt(v)+"%（上限 8 兆）",
+ "本公司每回合收益永久 +"+Math.round((v-1)*100)+"%",
+ "立即獲得 "+fmt(v)+" 兆",
+ "立即獲得 "+fmt(v)+" 兆，本公司收益 +"+(10+tier*3)+"%",
+ "立即獲得本公司 "+fmt(v)+" 倍收益",
+ "獲得現有財富 "+fmt(v)+"% 獎金（至少 1 兆）",
+ "全隊每回合收益永久 +"+Math.round((v-1)*100)+"%"
+ ][k];
+ return {k,v,name:names[k]+"·"+String(p).padStart(3,"0"),desc};
+}
+const shortSkill=c=>skillSpec(c).desc;
 function cardHTML(c,zone,i=0,n=1){
- const offset=i-(n-1)/2,colors=INDUSTRY_COLORS[c.sector]||["#5a5870","#aab2cc"];
+ const offset=i-(n-1)/2,colors=INDUSTRY_COLORS[c.sector]||["#5a5870","#aab2cc"];const spec=skillSpec(c);
  const logo="https://www.google.com/s2/favicons?domain="+encodeURIComponent(c.domain)+"&sz=64";
  return '<button class="company duel-card '+(selected===c.id&&zone==="hand"?"selected ":"")+(zone==="my"&&!acted?"available":"")+'" data-zone="'+zone+'" data-id="'+c.id+'" style="--offset:'+offset+';--dist:'+Math.abs(offset)+';--card-dark:'+colors[0]+';--card-light:'+colors[1]+'">'
  +'<span class="card-inner"><span class="card-heading"><span class="card-company">'+c.name+'</span><span class="card-rank">#'+c.id+'</span></span>'
  +'<span class="card-type">'+c.sector+' · '+c.country+'</span>'
- +'<span class="card-art"><span class="card-spark">✦</span><span class="card-emoji">'+c.emoji+'</span><img class="card-logo" loading="lazy" alt="" src="'+logo+'"><span class="card-spark">✦</span></span>'
- +'<span class="card-skill"><b>✧ '+c.skill.split("・").pop()+'</b><span>'+shortSkill(c)+'</span></span>'
+ +'<span class="card-art"><span class="art-orbit"></span><span class="art-halo"></span><span class="card-emoji">'+c.emoji+'</span><img class="card-logo" loading="lazy" alt="" src="'+logo+'" onerror="this.style.display=\'none\'"><span class="art-stars">✦ ✧ ✦</span></span>'
+ +'<span class="card-skill"><b>✧ '+spec.name+'</b><span>'+shortSkill(c)+'</span></span>'
  +'<span class="card-footer"><span>💰 +'+income(c).toFixed(1)+' 兆</span><span>每回合</span></span></span></button>'
 }
 function boardHTML(arr,zone){return Array.from({length:3},(_,i)=>arr[i]?cardHTML(arr[i],zone):'<div class="empty" data-slot="'+i+'">＋ 空位</div>').join("")}
@@ -247,7 +277,7 @@ el.addEventListener("pointerup",e=>{
 el.addEventListener("pointercancel",()=>{el.classList.remove("dragging");document.querySelectorAll(".drop-ready,.drop-hover").forEach(x=>x.classList.remove("drop-ready","drop-hover"))});
 el.onclick=()=>{if(swiped||Date.now()<(window.suppressCardClickUntil||0))return;if(zone==="hand"){selected=id;render();openDetail(c,zone)}else openDetail(c,zone)};
 });}
-function openDetail(c,zone){detailCard=c;detailZone=zone;$("detailLogo").src="https://www.google.com/s2/favicons?domain="+encodeURIComponent(c.domain)+"&sz=128";$("detailArt").textContent=c.emoji;$("detailName").textContent=c.name;$("detailMeta").textContent="市值榜參考 #"+c.id+" · "+c.country+" · "+c.sector;$("detailProfit").innerHTML="<b>💵 年度淨利示意值</b><div>約 "+c.profit+" 億美元 / 年</div><small>遊戲每回合收益："+income((zone==="my"?mine:zone==="cpu"?theirs:hand).find(x=>x.id===c.id)||c).toFixed(2)+" 兆美元（遊戲化放大）</small>";$("detailSkill").innerHTML="<b>✨ 專屬技能："+c.skill+"</b><div>"+c.skillDesc+"</div>";$("detailAction").textContent=zone==="my"?"查看完畢":zone==="hand"?"⬆ 出牌並觸發技能":"返回戰場";$("detailAction").disabled=(zone==="hand"&&(acted||phase!=="player"));$("detail").classList.remove("hidden")}
+function openDetail(c,zone){detailCard=c;detailZone=zone;$("detailLogo").src="https://www.google.com/s2/favicons?domain="+encodeURIComponent(c.domain)+"&sz=128";$("detailArt").textContent=c.emoji;$("detailName").textContent=c.name;$("detailMeta").textContent="市值榜參考 #"+c.id+" · "+c.country+" · "+c.sector;$("detailProfit").innerHTML="<b>💵 年度淨利示意值</b><div>約 "+c.profit+" 億美元 / 年</div><small>遊戲每回合收益："+income((zone==="my"?mine:zone==="cpu"?theirs:hand).find(x=>x.id===c.id)||c).toFixed(2)+" 兆美元（遊戲化放大）</small>";$("detailSkill").innerHTML="<b>✨ 專屬技能："+c.skill+"</b><div>"+skillSpec(c).desc+"</div>";$("detailAction").textContent=zone==="my"?"查看完畢":zone==="hand"?"⬆ 出牌並觸發技能":"返回戰場";$("detailAction").disabled=(zone==="hand"&&(acted||phase!=="player"));$("detail").classList.remove("hidden")}
 function closeDetail(){$("detail").classList.add("hidden");detailCard=null;detailZone=null}
 function deploy(slot=null){
  if(phase!=="player"||acted||selected===null)return;
@@ -260,8 +290,25 @@ function deploy(slot=null){
  special(card,"player");
  render();if(!winCheck())end();
 }
-function special(c,owner){const arr=owner==="player"?mine:theirs,other=owner==="player"?cpuMoney:money,wealth=owner==="player"?money:cpuMoney;let bonus=0;const kind=(c.id-1)%10;switch(kind){case 0:bonus=income(c)*3;break;case 1:c.mult=(c.mult||1)*1.6;break;case 2:arr.forEach(x=>x.nextDouble=true);break;case 3:bonus=Math.min(6,other*.06);break;case 4:c.mult=(c.mult||1)*1.5;break;case 5:bonus=5;break;case 6:bonus=3;c.mult=(c.mult||1)*1.2;break;case 7:bonus=income(c)*4;break;case 8:bonus=Math.max(2,wealth*.1);break;case 9:arr.forEach(x=>x.mult=(x.mult||1)*1.12);break}if(owner==="player")money+=bonus;else cpuMoney+=bonus;return bonus}
-function collect(arr){return arr.reduce((sum,c)=>{let v=income(c);if(c.nextDouble){v*=2;c.nextDouble=false}return sum+v},0)}
+function special(c,owner){
+ const arr=owner==="player"?mine:theirs,other=owner==="player"?cpuMoney:money,wealth=owner==="player"?money:cpuMoney;
+ const {k,v}=skillSpec(c);let bonus=0;
+ switch(k){
+ case 0:bonus=income(c)*v;break;
+ case 1:c.mult=(c.mult||1)*v;break;
+ case 2:arr.forEach(x=>x.nextDouble=v);break;
+ case 3:bonus=Math.min(8,other*v/100);break;
+ case 4:c.mult=(c.mult||1)*v;break;
+ case 5:bonus=v;break;
+ case 6:bonus=v;c.mult=(c.mult||1)*(1+(10+Math.floor((c.id-1)/10)*3)/100);break;
+ case 7:bonus=income(c)*v;break;
+ case 8:bonus=Math.max(1,wealth*v/100);break;
+ case 9:arr.forEach(x=>x.mult=(x.mult||1)*v);break;
+ }
+ if(owner==="player")money+=bonus;else cpuMoney+=bonus;
+ return bonus;
+}
+function collect(arr){return arr.reduce((sum,c)=>{let v=income(c);if(c.nextDouble){v*=c.nextDouble;c.nextDouble=false}return sum+v},0)}
 function winCheck(){if(money<TARGET&&cpuMoney<TARGET)return false;finished=true;phase="done";gameId++;$("resultEmoji").textContent=money>=TARGET?"🏆":"🤖";$("resultTitle").textContent=money>=TARGET?"你成為百兆富豪！":"電腦先賺到百兆！";$("resultText").textContent="最終財富："+format(money)+" VS "+format(cpuMoney)+"。";$("result").classList.remove("hidden");render();return true}
 function start(){gameId++;deck=shuffled();hand=[];mine=[];theirs=[];money=0;cpuMoney=0;turn=1;phase="player";acted=false;selected=null;finished=false;for(let i=0;i<3;i++)hand.push(pull());for(let i=0;i<2;i++)theirs.push({...pull(),mult:1});$("result").classList.add("hidden");closeDetail();show("game");render()}
 function end(){if(phase!=="player"||finished)return;phase="cpu";selected=null;render();const token=gameId;setTimeout(()=>{if(token!==gameId||finished)return;cpuTurn()},850)}
