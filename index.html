@@ -253,6 +253,56 @@ body:has(#game:not([hidden])) .app{position:relative;z-index:1;max-width:1440px}
  #game .duel-card .card-emoji{font-size:clamp(1.3rem,5vw,2.5rem)!important}
  #game .duel-card .card-art{min-height:12px}
 }
+</style><style>
+/* Full-width enterprise artwork and forced landscape play experience. */
+#game .duel-card .card-art{padding:0!important;display:block;position:relative;overflow:hidden;min-height:20px;flex:1 1 auto}
+#game .duel-card .company-illustration{display:block;width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+#game .duel-card .card-logo{position:absolute;bottom:3px;right:3px;z-index:3;background:#fff;border:1px solid #fff9}
+@media(orientation:landscape) and (max-height:700px){
+ html,body{height:100%;overflow:hidden}
+ body:has(#game:not([hidden])) .app{max-width:none;width:100%;height:100dvh;padding:2px 5px;gap:2px}
+ body:has(#game:not([hidden])) .top{min-height:20px;margin:0}
+ body:has(#game:not([hidden])) .top .brand{font-size:.73rem}
+ body:has(#game:not([hidden])) .top .brand small{display:none}
+ body:has(#game:not([hidden])) .top .btn{padding:2px 7px;font-size:.65rem}
+ #game:not([hidden]){display:grid!important;grid-template-columns:minmax(90px,17%) minmax(0,1fr);grid-template-rows:26px minmax(0,1fr) minmax(0,1fr) minmax(0,1.15fr);gap:4px;min-height:0;overflow:hidden}
+ #game .turn{grid-column:1/-1;grid-row:1;order:unset;padding:1px 5px;min-height:0}
+ #game .turn #turn{padding:2px 5px}
+ #game .turn .btn{padding:2px 6px}
+ #game .score-cpu{grid-column:1;grid-row:2;order:unset;min-height:0}
+ #game .score-mine{grid-column:1;grid-row:3;order:unset;min-height:0}
+ #game .score-card{height:100%;display:flex;flex-direction:column;justify-content:center;gap:3px;padding:5px}
+ #game .score-head{display:flex;flex-direction:column;gap:2px;font-size:clamp(.58rem,1.1vw,.8rem)}
+ #game .score strong{font-size:clamp(.85rem,2vw,1.5rem)}
+ #game .arena{grid-column:2;grid-row:2/4;order:unset;display:flex;flex-direction:column;gap:1px;padding:3px;min-height:0;overflow:hidden}
+ #game .arena .side-title{font-size:.59rem;line-height:1;margin:0}
+ #game .arena .versus{font-size:.52rem;line-height:1;padding:0}
+ #game .slots{flex:1 1 0!important;min-height:0!important;display:flex;justify-content:center;align-items:center;gap:5px}
+ #game .slots>.duel-card,#game .slots>.empty,#game #cpuBoard>.duel-card,#game #myBoard>.duel-card,#game #cpuBoard>.empty,#game #myBoard>.empty{flex:0 1 auto!important;height:100%!important;max-height:100%!important;width:auto!important;aspect-ratio:5/7!important;min-width:0!important;min-height:0!important}
+ #game .hand-area{grid-column:2;grid-row:4;order:unset;min-height:0;display:flex;flex-direction:column;gap:1px;padding:3px}
+ #game .hand-title{font-size:.6rem}
+ #game .fan{flex:1 1 0!important;min-height:0!important;height:auto!important;display:flex;align-items:center;justify-content:center;gap:6px;padding:1px}
+ #game .fan .duel-card{flex:0 1 auto!important;height:100%!important;max-height:100%!important;width:auto!important;max-width:none!important;aspect-ratio:5/7!important;margin:0!important;transform:none!important}
+ #game .fan .duel-card.dragging{transform:translate(var(--drag-x),var(--drag-y)) scale(1.05)!important}
+ #game .message{display:none}
+ #game .foot{grid-column:1;grid-row:4;order:unset;display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:4px;margin:0}
+ #game .foot small{font-size:.55rem;display:block}
+ #game .foot .btn{font-size:.6rem;padding:4px}
+ #game .duel-card .card-inner{padding:1px;gap:1px}
+ #game .duel-card .card-heading{min-height:0;padding:0}
+ #game .duel-card .card-company{font-size:clamp(.45rem,1.2vh,.65rem)}
+ #game .duel-card .card-rank{font-size:.4rem}
+ #game .duel-card .card-type{display:none}
+ #game .duel-card .card-art{min-height:0;flex:1 1 0}
+ #game .duel-card .card-skill{padding:1px!important;gap:0;min-height:0}
+ #game .duel-card .card-skill b{font-size:clamp(.4rem,1.2vh,.65rem);line-height:1.05}
+ #game .duel-card .card-skill span{font-size:clamp(.39rem,1.15vh,.6rem);line-height:1.06}
+ #game .duel-card .card-footer{font-size:clamp(.4rem,1.15vh,.6rem);padding:0}
+ #game .duel-card .card-footer span:last-child{display:none}
+}
+@media(orientation:portrait) and (max-width:850px){
+ body:has(#game:not([hidden]))::after{content:"📱 ↻  請將手機橫向旋轉遊玩";position:fixed;inset:0;z-index:200;background:linear-gradient(140deg,#09162c,#193e64);color:#ffe6a4;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;font-size:clamp(1.2rem,5vw,2rem);font-weight:950;text-shadow:0 0 12px #e1a948;pointer-events:auto}
+}
 </style></head><body><div class="app"><header class="top"><div class="brand">💰 華爾街王者 <small>百兆富豪戰 · 全球百大企業</small></div><button class="btn outline" id="homeButton">首頁</button></header>
 <section class="screen" id="home"><div class="hero"><div>🏆 全球百大企業卡牌競賽</div><h1>百兆富豪戰</h1><div class="big">目標 $100 兆</div><p>招募世界級企業、出牌立即發動技能、替換場上公司來經營你的帝國。<br>比電腦更快累積 100 兆美元！</p><button class="btn primary" id="startButton">🎮 開始遊戲</button><button class="btn" id="rulesButton">📘 玩法教學</button><button class="btn" id="catalogButton">🃏 百大企業圖鑑</button></div><p class="source">卡牌池參考 2026 年全球大型上市公司市值排名；排名會隨市場變動。年度淨利為供遊戲使用的近似示意值，非即時或經審計的最新財報。技能與遊戲收益為虛構設定。</p></section>
 <section class="screen" id="rulesScreen" hidden><h2>📘 三步學會百兆富豪戰</h2><div class="rules"><p><strong>① 抽牌與部署：</strong>開局獲得 3 張手牌。每回合將 1 張手牌往上拖到我方空格部署，或拖到既有公司上直接替換；最多同時擁有 3 家企業。出牌立即觸發該公司的專屬技能。</p><p><strong>② 賺錢與技能：</strong>每回合結算時，場上所有公司自動帶來收益。每張公司卡有獨特技能；選擇場上公司可使用技能，或部署新公司，兩者每回合只能選一個，完成後自動換電腦。</p><p><strong>③ 勝利：</strong>玩家與電腦輪流經營，誰先累積到 <strong>100 兆美元</strong> 就贏！</p><p>公司卡顯示年度淨利示意值（億美元）；遊戲每回合收益經過放大與平衡，讓對局能在合理時間結束。</p></div><button class="btn primary" id="rulesStart">開始遊戲 →</button><button class="btn" id="rulesBack">返回首頁</button></section>
@@ -295,13 +345,25 @@ function skillSpec(c){
  return {k,v,name:names[k]+"·"+String(p).padStart(3,"0"),desc};
 }
 const shortSkill=c=>skillSpec(c).desc;
+function companyArtwork(c){
+ const palette=INDUSTRY_COLORS[c.sector]||["#355277","#83bbef"],dark=palette[0],light=palette[1],seed=c.id;
+ const towers=Array.from({length:13},(_,i)=>{const h=25+((seed*19+i*37)%80),x=i*24-8;return '<rect x="'+x+'" y="'+(170-h)+'" width="'+(15+(i%3)*4)+'" height="'+h+'" fill="'+(i%2?'#091326':'#172c47')+'" stroke="'+light+'" stroke-opacity=".3"/>'+Array.from({length:3},(_,j)=>'<rect x="'+(x+4+(j%2)*7)+'" y="'+(178-h+j*17)+'" width="3" height="6" fill="#f9d990" opacity=".7"/>').join('')}).join('');
+ const motif=c.sector.includes("晶片")||c.sector.includes("科技")||c.sector.includes("軟體")||c.sector.includes("雲端")?'<rect x="100" y="43" width="100" height="90" rx="11" fill="#10253c" stroke="#e9f5ff" stroke-width="4"/><rect x="113" y="57" width="74" height="62" rx="5" fill="'+light+'" opacity=".6"/>'+Array.from({length:7},(_,i)=>'<path d="M'+(108+i*14)+' 38v-15 M'+(108+i*14)+' 133v17" stroke="#f2e7b2" stroke-width="3"/>').join(''):
+ c.sector==="醫療"?'<path d="M150 34L214 60v51q-12 39-64 58-52-19-64-58V60z" fill="#e9fff0" fill-opacity=".35" stroke="#e9fff0" stroke-width="5"/><path d="M138 63h24v26h26v22h-26v26h-24v-26h-26V89h26z" fill="#e8fff5"/>':
+ c.sector==="汽車"?'<path d="M63 115L83 81Q90 70 114 70h73q21 0 31 15l21 30 9 13v21H52v-20z" fill="'+light+'" stroke="#fff2d3" stroke-width="4"/><path d="M102 82h76l22 29H83z" fill="#09243c"/><circle cx="92" cy="149" r="16" fill="#111827" stroke="#fff" stroke-width="5"/><circle cx="211" cy="149" r="16" fill="#111827" stroke="#fff" stroke-width="5"/>':
+ c.sector==="能源"?'<path d="M68 162l28-114 28 114m-42-65h29M76 122h40M154 162V53h55v109m-55-75h55" stroke="#ffe6aa" stroke-width="8" fill="none"/><path d="M153 53l26-23 30 23" fill="none" stroke="#fff" stroke-width="6"/>':
+ c.sector==="金融"?'<path d="M56 77l94-47 94 47v13H56zM72 98h18v68H72zM111 98h18v68h-18zM170 98h18v68h-18zM209 98h18v68h-18zM52 167h197v12H52z" fill="#f5d789" stroke="#fff5d7" stroke-width="2"/>':
+ '<path d="M150 28l65 35v76l-65 38-65-38V63z" fill="'+light+'" opacity=".58" stroke="#fff3c4" stroke-width="5"/><circle cx="150" cy="99" r="38" fill="#ffffff77" stroke="#fff" stroke-width="3"/>';
+ const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 190" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="g"><stop stop-color="'+light+'"/><stop offset=".55" stop-color="'+dark+'"/><stop offset="1" stop-color="#040b1d"/></radialGradient><filter id="gl"><feGaussianBlur stdDeviation="8"/></filter></defs><rect width="300" height="190" fill="url(#g)"/><circle cx="150" cy="76" r="72" fill="'+light+'" opacity=".48" filter="url(#gl)"/><g opacity=".65">'+towers+'</g><path d="M0 168L300 168" stroke="#f7d99a" stroke-width="3"/><g>'+motif+'</g><path d="M0 188L150 152 300 188" fill="none" stroke="'+light+'" opacity=".5" stroke-width="3"/><g fill="#fff4c2"><circle cx="24" cy="20" r="2"/><circle cx="275" cy="45" r="2"/><circle cx="248" cy="14" r="3"/></g></svg>';
+ return 'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(svg);
+}
 function cardHTML(c,zone,i=0,n=1){
  const offset=i-(n-1)/2,colors=INDUSTRY_COLORS[c.sector]||["#5a5870","#aab2cc"];const spec=skillSpec(c);
  const logo="https://www.google.com/s2/favicons?domain="+encodeURIComponent(c.domain)+"&sz=64";
  return '<button class="company duel-card '+(selected===c.id&&zone==="hand"?"selected ":"")+(zone==="my"&&!acted?"available":"")+'" data-zone="'+zone+'" data-id="'+c.id+'" style="--offset:'+offset+';--dist:'+Math.abs(offset)+';--card-dark:'+colors[0]+';--card-light:'+colors[1]+'">'
  +'<span class="card-inner"><span class="card-heading"><span class="card-company">'+c.name+'</span><span class="card-rank">#'+c.id+'</span></span>'
  +'<span class="card-type">'+c.sector+' · '+c.country+'</span>'
- +'<span class="card-art"><span class="art-orbit"></span><span class="art-halo"></span><span class="card-emoji">'+c.emoji+'</span><img class="card-logo" loading="lazy" alt="" src="'+logo+'" onerror="this.style.display=\'none\'"><span class="art-stars">✦ ✧ ✦</span></span>'
+ +'<span class="card-art"><img class="company-illustration" draggable="false" alt="" src="'+companyArtwork(c)+'"><img class="card-logo" loading="lazy" alt="" src="'+logo+'" onerror="this.style.display=\'none\'"></span>'
  +'<span class="card-skill"><b>✧ '+spec.name+'</b><span>'+shortSkill(c)+'</span></span>'
  +'<span class="card-footer"><span>💰 +'+income(c).toFixed(1)+' 兆</span><span>每回合</span></span></span></button>'
 }
