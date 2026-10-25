@@ -465,6 +465,22 @@ body:has(>.swipe-zoom-preview) #game .fan .duel-card.dragging{
 @keyframes tapZoomIn{from{opacity:0;transform:translateY(35px) scale(.82)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes tapZoomFade{from{opacity:0}to{opacity:1}}
 @media(max-height:550px){.tap-zoom-card{width:min(30vw,175px)}.tap-zoom-hint{font-size:.65rem}}
+</style><style>
+/* Enlarged readable skill panel on cards, without changing 5:7 card shape. */
+#game .duel-card .card-skill,#catalog .duel-card .card-skill,.tap-zoom-card .duel-card .card-skill{
+ flex:0 0 35%!important;min-height:0!important;max-height:42%!important;
+ display:flex!important;flex-direction:column!important;justify-content:center!important;
+ gap:2px!important;padding:3px 4px!important;overflow:hidden!important;
+}
+#game .duel-card .card-art,#catalog .duel-card .card-art,.tap-zoom-card .duel-card .card-art{flex:1 1 0!important;min-height:0!important}
+#game .duel-card .card-skill b,#catalog .duel-card .card-skill b{font-size:clamp(.56rem,2.1vw,.8rem)!important;line-height:1.14!important}
+#game .duel-card .card-skill span,#catalog .duel-card .card-skill span{font-size:clamp(.53rem,1.98vw,.76rem)!important;line-height:1.15!important;overflow-wrap:anywhere}
+#game .duel-card .card-company{font-size:clamp(.56rem,2.15vw,.78rem)!important;line-height:1.12!important}
+.tap-zoom-card .duel-card .card-skill{flex-basis:37%!important}
+.tap-zoom-card .duel-card .card-skill b{font-size:clamp(.8rem,3.2vw,1rem)!important}
+.tap-zoom-card .duel-card .card-skill span{font-size:clamp(.73rem,2.8vw,.95rem)!important}
+.swipe-zoom-preview .card-skill{flex:0 0 37%!important;min-height:0!important;padding:3px!important}
+@media(orientation:portrait) and (max-width:850px){#game .fan .duel-card .card-skill{flex-basis:37%!important;padding:2px!important}}
 </style></head><body><div class="app"><header class="top"><div class="brand">💰 華爾街王者 <small>百兆富豪戰 · 全球百大企業</small></div><button class="btn outline" id="homeButton">首頁</button></header>
 <section class="screen" id="home"><div class="hero"><div>🏆 全球百大企業卡牌競賽</div><h1>百兆富豪戰</h1><div class="big">目標 $100 兆</div><p>招募世界級企業、出牌立即發動技能、替換場上公司來經營你的帝國。<br>比電腦更快累積 100 兆美元！</p><button class="btn primary" id="startButton">🎮 開始遊戲</button><button class="btn" id="rulesButton">📘 玩法教學</button><button class="btn" id="catalogButton">🃏 百大企業圖鑑</button></div><p class="source">卡牌池參考 2026 年全球大型上市公司市值排名；排名會隨市場變動。年度淨利為供遊戲使用的近似示意值，非即時或經審計的最新財報。技能與遊戲收益為虛構設定。</p></section>
 <section class="screen" id="rulesScreen" hidden><h2>📘 三步學會百兆富豪戰</h2><div class="rules"><p><strong>① 抽牌與部署：</strong>開局獲得 3 張手牌。每回合將 1 張手牌往上拖到我方空格部署，或拖到既有公司上直接替換；最多同時擁有 3 家企業。出牌立即觸發該公司的專屬技能。</p><p><strong>② 賺錢與技能：</strong>每回合結算時，場上所有公司自動帶來收益。每張公司卡有獨特技能；選擇場上公司可使用技能，或部署新公司，兩者每回合只能選一個，完成後自動換電腦。</p><p><strong>③ 勝利：</strong>玩家與電腦輪流經營，誰先累積到 <strong>100 兆美元</strong> 就贏！</p><p>公司卡顯示年度淨利示意值（億美元）；遊戲每回合收益經過放大與平衡，讓對局能在合理時間結束。</p></div><button class="btn primary" id="rulesStart">開始遊戲 →</button><button class="btn" id="rulesBack">返回首頁</button></section>
@@ -478,7 +494,8 @@ const $=id=>document.getElementById(id);
 const TARGET=100;
 const PROFIT_SCALE=0.022;
 const SPECIALS=["市場擴張","科技突破","品牌爆發","國際合作","成本優化","全球併購","研發突破","供應鏈加速","資本運作","數位升級"];
-const companies=DATA.map((c,i)=>({...c,skill:c.name+"・"+SPECIALS[i%SPECIALS.length],skillDesc:["立即賺取相當於本公司 3 回合的收益。","本公司永久增加 60% 每回合收益。","所有我方公司下一回合收益加倍。","獲得相當於對手目前財富 6% 的獎金（上限 6 兆）。","本公司永久增加 50% 每回合收益。","立即獲得 5 兆美元。","立即獲得 3 兆，並使本公司永久增加 20% 收益。","本公司本回合額外產生 4 倍收益。","獲得我方現有財富 10% 的額外收益（至少 2 兆）。","所有我方公司永久增加 12% 每回合收益。"][i%10]}));
+const ZH_NAMES=["輝達","蘋果","字母控股","微軟","亞馬遜","台積電","Meta 元宇宙","博通","特斯拉","美光科技","波克夏海瑟威","超微半導體","禮來","摩根大通","沃爾瑪","威士卡","英特爾","埃克森美孚","艾司摩爾","嬌生","萬事達卡","艾伯維","帕蘭泰爾","甲骨文","思科","雪佛龍","好市多","美國銀行","科林研發","可口可樂","應用材料","開拓重工","默克藥廠","滙豐控股","戴爾科技","寶僑","聯合健康","奇異航太","安謀","帕羅奧圖網路","摩根士丹利","網飛","菲利普莫里斯","家得寶","加拿大皇家銀行","阿里巴巴","諾華","殼牌","高盛","亞瑞斯塔網路","阿斯特捷利康","奇異維諾瓦","雷神科技","三菱日聯金融","富國銀行","德州儀器","賽默飛世爾","科磊","思愛普","邁威爾科技","花旗集團","豐田汽車","安進","必和必拓","林德","國際商業機器","高通","桑坦德銀行","希捷科技","安費諾","美國運通","道達爾能源","威訊通訊","賽富時","多倫多道明銀行","吉利德科學","迪爾公司","Shopify 購物平台","亞德諾半導體","迪士尼","亞培","T-Mobile 電信","百事公司","美國電話電報","嘉信理財","伊頓","諾和諾德","南方銅業","偉塔房地產","麥當勞","貝萊德","聯合太平洋鐵路","威騰電子","輝瑞","波音","新紀元能源","丹納赫","康菲石油","力拓集團","百威英博"];
+const companies=DATA.map((c,i)=>({...c,name:ZH_NAMES[i]||c.name,skill:c.name+"・"+SPECIALS[i%SPECIALS.length],skillDesc:["立即賺取相當於本公司 3 回合的收益。","本公司永久增加 60% 每回合收益。","所有我方公司下一回合收益加倍。","獲得相當於對手目前財富 6% 的獎金（上限 6 兆）。","本公司永久增加 50% 每回合收益。","立即獲得 5 兆美元。","立即獲得 3 兆，並使本公司永久增加 20% 收益。","本公司本回合額外產生 4 倍收益。","獲得我方現有財富 10% 的額外收益（至少 2 兆）。","所有我方公司永久增加 12% 每回合收益。"][i%10]}));
 let deck=[],hand=[],mine=[],theirs=[],money=0,cpuMoney=0,turn=1,phase="player",acted=false,selected=null,detailCard=null,detailZone=null,gameId=0,finished=false;
 function show(id){document.querySelectorAll(".screen").forEach(el=>el.hidden=el.id!==id);$("homeButton").style.display=id==="home"?"none":""}
 function shuffled(){const a=[...companies];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
