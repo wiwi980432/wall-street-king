@@ -303,9 +303,48 @@ body:has(#game:not([hidden])) .app{position:relative;z-index:1;max-width:1440px}
 @media(orientation:portrait) and (max-width:850px){
  body:has(#game:not([hidden]))::after{content:"📱 ↻  請將手機橫向旋轉遊玩";position:fixed;inset:0;z-index:200;background:linear-gradient(140deg,#09162c,#193e64);color:#ffe6a4;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;font-size:clamp(1.2rem,5vw,2rem);font-weight:950;text-shadow:0 0 12px #e1a948;pointer-events:auto}
 }
+</style><style>
+/* Enlarged landscape trading cards, stable 5:7 ratio, five visible starting cards. */
+@media(orientation:landscape) and (max-height:700px){
+ body:has(#game:not([hidden])) .app{padding:1px 4px!important}
+ body:has(#game:not([hidden])) .top{min-height:16px!important;margin:0!important}
+ #game:not([hidden]){grid-template-columns:minmax(78px,14%) minmax(0,1fr)!important;grid-template-rows:22px minmax(0,1fr) minmax(0,1fr) minmax(0,1.65fr)!important;gap:2px!important}
+ #game .arena{padding:1px!important;gap:0!important}
+ #game .side-title{font-size:.52rem!important;line-height:1!important}
+ #game .versus{font-size:.46rem!important;line-height:1!important}
+ #game .slots{gap:6px!important;overflow:hidden}
+ #game .slots>.duel-card,#game .slots>.empty,#game #cpuBoard>.duel-card,#game #myBoard>.duel-card,#game #cpuBoard>.empty,#game #myBoard>.empty{
+  height:100%!important;width:auto!important;max-width:calc((100% - 16px)/3)!important;
+  aspect-ratio:5/7!important;flex:0 1 auto!important;min-height:0!important;max-height:100%!important;
+ }
+ #game .hand-area{padding:2px!important;gap:0!important}
+ #game .hand-title{font-size:.6rem!important;line-height:1!important}
+ #game .fan{gap:5px!important;overflow:hidden;justify-content:center!important;align-items:center!important}
+ #game .fan .duel-card{
+  height:100%!important;width:auto!important;max-width:calc((100% - 30px)/5)!important;
+  aspect-ratio:5/7!important;flex:0 1 auto!important;min-width:0!important;
+  max-height:100%!important;margin:0!important;transform:none!important;
+ }
+ #game .fan .duel-card.dragging{transform:translate(var(--drag-x),var(--drag-y)) scale(1.06)!important}
+ #game .duel-card .card-heading{min-height:0!important}
+ #game .duel-card .card-company{font-size:clamp(.52rem,1.6vh,.78rem)!important}
+ #game .duel-card .card-rank{font-size:.43rem!important}
+ #game .duel-card .card-art{flex:1 1 0!important;min-height:0!important}
+ #game .duel-card .card-skill{flex:0 0 auto!important;padding:2px!important}
+ #game .duel-card .card-skill b{font-size:clamp(.47rem,1.48vh,.74rem)!important;line-height:1.1!important}
+ #game .duel-card .card-skill span{font-size:clamp(.45rem,1.35vh,.7rem)!important;line-height:1.1!important}
+ #game .duel-card .card-footer{font-size:clamp(.43rem,1.35vh,.65rem)!important}
+ #game .score-card{padding:3px!important}
+ #game .score strong{font-size:clamp(.9rem,2.2vw,1.6rem)!important}
+}
+@media(orientation:landscape) and (min-height:701px){
+ #game .hand-area .fan{display:flex;justify-content:center;align-items:center;gap:9px}
+ #game .hand-area .fan .duel-card{width:min(15%,170px);height:auto;aspect-ratio:5/7;max-width:170px;margin:0;transform:none}
+ #game .hand-area .fan .duel-card.dragging{transform:translate(var(--drag-x),var(--drag-y)) scale(1.05)!important}
+}
 </style></head><body><div class="app"><header class="top"><div class="brand">💰 華爾街王者 <small>百兆富豪戰 · 全球百大企業</small></div><button class="btn outline" id="homeButton">首頁</button></header>
 <section class="screen" id="home"><div class="hero"><div>🏆 全球百大企業卡牌競賽</div><h1>百兆富豪戰</h1><div class="big">目標 $100 兆</div><p>招募世界級企業、出牌立即發動技能、替換場上公司來經營你的帝國。<br>比電腦更快累積 100 兆美元！</p><button class="btn primary" id="startButton">🎮 開始遊戲</button><button class="btn" id="rulesButton">📘 玩法教學</button><button class="btn" id="catalogButton">🃏 百大企業圖鑑</button></div><p class="source">卡牌池參考 2026 年全球大型上市公司市值排名；排名會隨市場變動。年度淨利為供遊戲使用的近似示意值，非即時或經審計的最新財報。技能與遊戲收益為虛構設定。</p></section>
-<section class="screen" id="rulesScreen" hidden><h2>📘 三步學會百兆富豪戰</h2><div class="rules"><p><strong>① 抽牌與部署：</strong>開局獲得 3 張手牌。每回合將 1 張手牌往上拖到我方空格部署，或拖到既有公司上直接替換；最多同時擁有 3 家企業。出牌立即觸發該公司的專屬技能。</p><p><strong>② 賺錢與技能：</strong>每回合結算時，場上所有公司自動帶來收益。每張公司卡有獨特技能；選擇場上公司可使用技能，或部署新公司，兩者每回合只能選一個，完成後自動換電腦。</p><p><strong>③ 勝利：</strong>玩家與電腦輪流經營，誰先累積到 <strong>100 兆美元</strong> 就贏！</p><p>公司卡顯示年度淨利示意值（億美元）；遊戲每回合收益經過放大與平衡，讓對局能在合理時間結束。</p></div><button class="btn primary" id="rulesStart">開始遊戲 →</button><button class="btn" id="rulesBack">返回首頁</button></section>
+<section class="screen" id="rulesScreen" hidden><h2>📘 三步學會百兆富豪戰</h2><div class="rules"><p><strong>① 抽牌與部署：</strong>開局獲得 5 張手牌。每回合將 1 張手牌往上拖到我方空格部署，或拖到既有公司上直接替換；最多同時擁有 3 家企業。出牌立即觸發該公司的專屬技能。</p><p><strong>② 賺錢與技能：</strong>每回合結算時，場上所有公司自動帶來收益。每張公司卡有獨特技能；選擇場上公司可使用技能，或部署新公司，兩者每回合只能選一個，完成後自動換電腦。</p><p><strong>③ 勝利：</strong>玩家與電腦輪流經營，誰先累積到 <strong>100 兆美元</strong> 就贏！</p><p>公司卡顯示年度淨利示意值（億美元）；遊戲每回合收益經過放大與平衡，讓對局能在合理時間結束。</p></div><button class="btn primary" id="rulesStart">開始遊戲 →</button><button class="btn" id="rulesBack">返回首頁</button></section>
 <section class="screen" id="catalogScreen" hidden><h2>🃏 全球百大企業圖鑑 <span class="pill" id="catalogCount">100 家</span></h2><div class="catalog-controls"><input id="search" placeholder="搜尋公司、國家或產業"><button class="btn" id="catalogBack">返回首頁</button></div><div class="catalog" id="catalog"></div><p class="source">排名參考：2026 年大型上市公司市值榜單；卡片年度淨利為近似示意，並非最新正式財報。</p></section>
 <section class="screen" id="game" hidden><div class="score score-cpu"><div class="score-card cpu"><div class="score-head"><span>🤖 對手財富</span><span id="cpuRate">每回合 +0 兆</span></div><strong id="cpuMoney">$0.0 兆</strong><div class="track"><div class="fill" id="cpuBar"></div></div></div></div><div class="turn"><span id="turn">第 1 回合</span><b id="phase">你的回合</b><button class="btn outline" id="infoButton">？規則</button></div><div class="arena"><div class="side-title"><span>🤖 電腦的企業</span><span id="cpuSlots">0 / 3</span></div><div class="slots" id="cpuBoard"></div><div class="versus" id="prompt">↑ 拖曳出牌 · 技能立即生效</div><div class="side-title"><span>🧑 我的企業</span><span id="mySlots">0 / 3</span></div><div class="slots" id="myBoard"></div></div><div class="score score-mine"><div class="score-card"><div class="score-head"><span>🧑 我的財富</span><span id="myRate">每回合 +0 兆</span></div><strong id="myMoney">$0.0 兆</strong><div class="track"><div class="fill" id="myBar"></div></div></div></div><div class="hand-area"><div class="hand-title"><span>🃏 我的手牌 <small style="font-weight:500;color:#b6c9db">↑ 拖到空格／公司出牌</small></span><span class="pill" id="handCount">0 張</span></div><div class="fan" id="hand"></div><div class="message" id="message">拖曳手牌到我方公司欄位</div></div><div class="foot"><small>先賺到 100 兆美元獲勝 · 企業數值為遊戲化示意</small><button class="btn outline" id="restartButton">重新開始</button></div></section></div>
 <div class="modal hidden" id="detail" role="dialog" aria-modal="true"><div class="sheet"><button class="close" id="closeDetail">✕</button><img id="detailLogo" class="logo" alt="公司 Logo"><div class="art" id="detailArt"></div><h2 id="detailName"></h2><div class="meta" id="detailMeta"></div><div class="feature" id="detailProfit"></div><div class="feature" id="detailSkill"></div><button class="btn primary" id="detailAction">確認</button><button class="btn outline" id="detailBack">返回遊戲</button></div></div>
@@ -440,7 +479,7 @@ function special(c,owner){
 }
 function collect(arr){return arr.reduce((sum,c)=>{let v=income(c);if(c.nextDouble){v*=c.nextDouble;c.nextDouble=false}return sum+v},0)}
 function winCheck(){if(money<TARGET&&cpuMoney<TARGET)return false;finished=true;phase="done";gameId++;$("resultEmoji").textContent=money>=TARGET?"🏆":"🤖";$("resultTitle").textContent=money>=TARGET?"你成為百兆富豪！":"電腦先賺到百兆！";$("resultText").textContent="最終財富："+format(money)+" VS "+format(cpuMoney)+"。";$("result").classList.remove("hidden");render();return true}
-function start(){gameId++;deck=shuffled();hand=[];mine=[];theirs=[];money=0;cpuMoney=0;turn=1;phase="player";acted=false;selected=null;finished=false;for(let i=0;i<3;i++)hand.push(pull());for(let i=0;i<2;i++)theirs.push({...pull(),mult:1});$("result").classList.add("hidden");closeDetail();show("game");render()}
+function start(){gameId++;deck=shuffled();hand=[];mine=[];theirs=[];money=0;cpuMoney=0;turn=1;phase="player";acted=false;selected=null;finished=false;for(let i=0;i<5;i++)hand.push(pull());for(let i=0;i<2;i++)theirs.push({...pull(),mult:1});$("result").classList.add("hidden");closeDetail();show("game");render()}
 function end(){if(phase!=="player"||finished)return;phase="cpu";selected=null;render();const token=gameId;setTimeout(()=>{if(token!==gameId||finished)return;cpuTurn()},850)}
 function cpuTurn(){if(phase!=="cpu"||finished)return;cpuMoney+=collect(theirs);if(winCheck())return;{const c={...pull(),mult:1};if(theirs.length<3)theirs.push(c);else theirs[Math.floor(Math.random()*theirs.length)]=c;special(c,"cpu")}if(winCheck())return;money+=collect(mine);if(winCheck())return;turn++;acted=false;phase="player";if(hand.length<7)hand.push(pull());render()}
 $("startButton").onclick=start;$("rulesStart").onclick=start;$("againButton").onclick=start;$("rulesButton").onclick=()=>show("rulesScreen");$("rulesBack").onclick=()=>show("home");$("catalogButton").onclick=()=>{show("catalogScreen");catalog()};$("catalogBack").onclick=()=>show("home");$("homeButton").onclick=()=>{if(!$("game").hidden&&!finished&&!confirm("確定離開這局遊戲？"))return;gameId++;show("home")};$("infoButton").onclick=()=>{alert("百兆富豪戰：每回合選擇部署 1 張公司，或點我方場上公司使用專屬技能。每回合結束後雙方公司自動創造收益，先累積 100 兆美元者獲勝。年度淨利為示意值，遊戲收益經過放大。")};$("restartButton").onclick=()=>{if(confirm("重新開始遊戲？"))start()};$("resultHome").onclick=()=>{gameId++;$("result").classList.add("hidden");show("home")};$("closeDetail").onclick=closeDetail;$("detailBack").onclick=closeDetail;$("detail").onclick=e=>{if(e.target===$("detail"))closeDetail()};$("detailAction").onclick=()=>{
