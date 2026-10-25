@@ -574,7 +574,7 @@ el.addEventListener("pointerup",e=>{
  }
 },{passive:true});
 el.addEventListener("pointercancel",()=>{clearPreview();el.style.removeProperty("--drag-x");el.style.removeProperty("--drag-y");el.classList.remove("dragging");document.querySelectorAll(".drop-ready,.drop-hover").forEach(x=>x.classList.remove("drop-ready","drop-hover"))});
-el.onclick=()=>{if(swiped||Date.now()<(window.suppressCardClickUntil||0))return;if(zone==="hand"){selected=id;showTapPreview(c)}else openDetail(c,zone)};
+el.onclick=()=>{if(swiped||Date.now()<(window.suppressCardClickUntil||0))return;if(zone==="hand"){selected=id;showTapPreview(c)}else if(zone==="my"||zone==="cpu"||zone==="catalog"){showTapPreview(c)}};
 });}
 function showTapPreview(c){
  const existing=document.querySelector(".tap-zoom-overlay");if(existing)existing.remove();
