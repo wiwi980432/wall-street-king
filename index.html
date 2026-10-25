@@ -185,6 +185,74 @@
 .duel-card .card-skill{background:linear-gradient(145deg,#fff8de,#f5dfa8);border:2px solid #b98940;box-shadow:inset 0 0 0 1px #fff}
 .duel-card .card-skill b{color:#6a2e19}
 @media(max-width:700px){#game .duel-card .card-emoji{font-size:clamp(1.25rem,5vw,2.6rem)!important}#game .duel-card .card-art{min-height:14px}}
+</style><style>
+/* Neon-gold strategy arena inspired by the supplied visual reference. */
+body:has(#game:not([hidden])){background:radial-gradient(ellipse at 50% 65%,#19385a 0%,#101c35 43%,#060c1d 85%);color:#f9e9bb}
+body:has(#game:not([hidden]))::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.42;background:repeating-linear-gradient(90deg,transparent 0 63px,#3975aa20 64px 65px),repeating-linear-gradient(0deg,transparent 0 63px,#3975aa20 64px 65px),radial-gradient(ellipse at center,#29639c55,transparent 65%);z-index:0}
+body:has(#game:not([hidden])) .app{position:relative;z-index:1;max-width:1440px}
+#game{--frame:#d4a958;--blueframe:#5284bf}
+#game .turn{background:linear-gradient(90deg,#121a30,#26334e 65%,#10182b);border:2px solid #a9854d;border-radius:8px;box-shadow:inset 0 0 0 1px #ffe6a055,0 4px 16px #0009;color:#fff1c7;font-weight:900}
+#game .turn #turn{background:linear-gradient(135deg,#574121,#161c2c);border:1px solid #edca81;padding:5px 11px;border-radius:5px;color:#ffdf8e}
+#game .turn #phase{color:#ffdfd1;text-shadow:0 0 8px #e85d62}
+#game .turn .btn{border:1px solid #779cc9;background:linear-gradient(130deg,#213c63,#101a2d);color:#e5efff}
+#game .score-card{border:2px solid #d3a45b;border-radius:10px;background:linear-gradient(140deg,#1c283f,#080e1c 75%);box-shadow:inset 0 0 0 1px #e7c67b55,0 4px 16px #0008;padding:7px 12px}
+#game .score-card.cpu{border-color:#c18d58}
+#game .score-head{font-weight:900;color:#fff0c7}
+#game .score strong{font-size:clamp(1.1rem,2.6vw,2rem);color:#ffdc7c;text-shadow:0 0 12px #ffb54b65}
+#game .score .track{background:#050a13;border:1px solid #68573a;height:5px}
+#game .arena{border:2px solid #507db1;border-radius:12px;background:linear-gradient(180deg,#0e223c99,#0a1729a8 48%,#17344e8c);box-shadow:inset 0 0 35px #4c9fd01c,0 0 18px #0007;padding:7px}
+#game .side-title{color:#f8e4a8;text-shadow:0 1px 5px #000;font-weight:950}
+#game .versus{color:#84c7ff;text-shadow:0 0 10px #3da7ff;border-top:1px solid #557ba955;border-bottom:1px solid #557ba955}
+#game .empty{border:2px dashed #7393b3;background:#172d4755;color:#b6d1ec}
+#game .hand-area{background:linear-gradient(140deg,#192c45d9,#0a1425e6);border:2px solid #9e7c48;border-radius:12px;box-shadow:inset 0 0 0 1px #f2ce7855,0 3px 14px #0008}
+#game .hand-title{color:#ffdf91;text-shadow:0 1px 5px #000}
+#game .hand-title .pill{background:#112c4b;color:#ffe4a3;border:1px solid #b08b55}
+#game .message{color:#b4d8fa}
+#game .foot .btn{background:linear-gradient(145deg,#1e3658,#0b1528);border-color:#bc955e}
+#game .duel-card{border:2px solid var(--card-light)!important;border-radius:6px!important;background:linear-gradient(120deg,#f8e1a1,var(--card-dark) 12%,var(--card-dark) 85%,#f9e1a6)!important;box-shadow:0 0 0 1px #130e19,0 5px 13px #000b,inset 0 0 0 1px #ffe6b9!important;padding:3px!important}
+#game .duel-card .card-inner{border:1px solid #ffe8b788;background:linear-gradient(170deg,#fff2b92a,#00000012 32%,#050b1a38);gap:3px;padding:4px}
+#game .duel-card .card-heading{background:linear-gradient(90deg,#0009,#ffffff17,#0008);border-bottom:1px solid #ffdf9380;align-items:center;padding:2px}
+#game .duel-card .card-company{font-weight:950;color:#fff9e7;text-shadow:0 1px 3px #000,0 0 8px var(--card-light)}
+#game .duel-card .card-rank{color:#ffe3a0}
+#game .duel-card .card-type{background:#050e2e66;color:#ffefc1;text-align:center;padding:2px 0;border-top:1px solid #fff5;border-bottom:1px solid #fff5}
+#game .duel-card .card-art{border:2px ridge #ffe5a7;box-shadow:inset 0 0 25px #05091f99,0 0 6px var(--card-light);background:radial-gradient(ellipse at 50% 45%,#ffffff77 0%,var(--card-light) 18%,var(--card-dark) 53%,#070d24 100%)}
+#game .duel-card .card-emoji{font-size:clamp(2.2rem,6vw,4.5rem)!important;filter:drop-shadow(0 5px 3px #000c) drop-shadow(0 0 15px var(--card-light))}
+#game .duel-card .art-orbit{box-shadow:0 0 16px var(--card-light),inset 0 0 10px #fff8}
+#game .duel-card .card-skill{background:linear-gradient(160deg,#fff7dd,#f4d7a2);border:2px solid #d2a363;border-radius:2px;box-shadow:inset 0 0 0 1px #fff9,0 1px 4px #0007;color:#221b20;gap:2px}
+#game .duel-card .card-skill b{color:#60301c;font-weight:950}
+#game .duel-card .card-skill span{color:#1c2030;font-weight:850}
+#game .duel-card .card-footer{background:#070d23a6;border-top:1px solid #ffe2a580;color:#ffebac;padding:2px}
+#game #hand .duel-card{box-shadow:0 5px 15px #000c,0 0 8px var(--card-light)!important}
+#game #hand .duel-card.selected{box-shadow:0 0 0 2px #ffe48b,0 0 24px #f4c358!important}
+@media(min-width:850px){
+ body:has(#game:not([hidden])) .app{max-width:1500px}
+ #game:not([hidden]){display:grid;grid-template-columns:minmax(130px,18%) minmax(0,1fr);grid-template-rows:auto auto auto auto;gap:8px;align-items:stretch}
+ #game .turn{grid-column:1/-1;grid-row:1;order:unset}
+ #game .score-cpu{grid-column:1;grid-row:2;order:unset}
+ #game .arena{grid-column:2;grid-row:2/4;order:unset}
+ #game .score-mine{grid-column:1;grid-row:3;order:unset}
+ #game .hand-area{grid-column:2;grid-row:4;order:unset}
+ #game .foot{grid-column:1;grid-row:4;order:unset;display:flex;flex-direction:column;justify-content:center}
+ #game .score-card{height:100%;display:flex;flex-direction:column;justify-content:center;gap:10px}
+ #game .score-head{flex-direction:column;gap:7px;font-size:1rem}
+ #game .score strong{font-size:clamp(1.3rem,2.8vw,2.5rem)}
+ #game .slots{min-height:180px;max-width:750px;margin:0 auto;width:100%;gap:12px}
+ #game .slots>.duel-card,#game .slots>.empty{width:100%;aspect-ratio:5/7;height:auto;max-height:250px;min-height:0}
+ #game .hand-area .fan{min-height:190px;padding:7px;gap:14px}
+ #game .hand-area .fan .duel-card{height:auto;aspect-ratio:5/7;width:clamp(110px,12vw,155px);min-height:0;margin:0;transform:none}
+ #game .duel-card .card-art{min-height:55px}
+}
+@media(max-width:700px){
+ #game .turn{padding:3px 5px}
+ #game .turn #turn{padding:3px 5px}
+ #game .score-card{padding:4px 7px}
+ #game .duel-card .card-inner{padding:2px;gap:2px}
+ #game .duel-card .card-heading{padding:1px}
+ #game .duel-card .card-type{padding:1px 0}
+ #game .duel-card .card-skill{padding:2px!important}
+ #game .duel-card .card-emoji{font-size:clamp(1.3rem,5vw,2.5rem)!important}
+ #game .duel-card .card-art{min-height:12px}
+}
 </style></head><body><div class="app"><header class="top"><div class="brand">💰 華爾街王者 <small>百兆富豪戰 · 全球百大企業</small></div><button class="btn outline" id="homeButton">首頁</button></header>
 <section class="screen" id="home"><div class="hero"><div>🏆 全球百大企業卡牌競賽</div><h1>百兆富豪戰</h1><div class="big">目標 $100 兆</div><p>招募世界級企業、出牌立即發動技能、替換場上公司來經營你的帝國。<br>比電腦更快累積 100 兆美元！</p><button class="btn primary" id="startButton">🎮 開始遊戲</button><button class="btn" id="rulesButton">📘 玩法教學</button><button class="btn" id="catalogButton">🃏 百大企業圖鑑</button></div><p class="source">卡牌池參考 2026 年全球大型上市公司市值排名；排名會隨市場變動。年度淨利為供遊戲使用的近似示意值，非即時或經審計的最新財報。技能與遊戲收益為虛構設定。</p></section>
 <section class="screen" id="rulesScreen" hidden><h2>📘 三步學會百兆富豪戰</h2><div class="rules"><p><strong>① 抽牌與部署：</strong>開局獲得 3 張手牌。每回合將 1 張手牌往上拖到我方空格部署，或拖到既有公司上直接替換；最多同時擁有 3 家企業。出牌立即觸發該公司的專屬技能。</p><p><strong>② 賺錢與技能：</strong>每回合結算時，場上所有公司自動帶來收益。每張公司卡有獨特技能；選擇場上公司可使用技能，或部署新公司，兩者每回合只能選一個，完成後自動換電腦。</p><p><strong>③ 勝利：</strong>玩家與電腦輪流經營，誰先累積到 <strong>100 兆美元</strong> 就贏！</p><p>公司卡顯示年度淨利示意值（億美元）；遊戲每回合收益經過放大與平衡，讓對局能在合理時間結束。</p></div><button class="btn primary" id="rulesStart">開始遊戲 →</button><button class="btn" id="rulesBack">返回首頁</button></section>
