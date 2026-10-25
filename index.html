@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>華爾街王者：市值爭霸</title>
+<style>
+:root{--bg:#080d19;--panel:#111a2b;--panel2:#17243a;--gold:#f5c76a;--text:#f5f7fb;--muted:#9caec6;--line:#2a3b55;--green:#6ce0b1;--red:#ff7c87}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#172947 0,#080d19 55%);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif}
+header{padding:24px 18px 16px;text-align:center;border-bottom:1px solid var(--line);background:#080d19bb}
+.kicker{color:var(--gold);letter-spacing:.18em;font-size:.76rem;font-weight:800}h1{margin:7px 0;font-size:clamp(1.7rem,5vw,2.7rem)}header p{color:var(--muted);margin:0}
+.wrap{max-width:1200px;margin:auto;padding:18px;display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:18px}
+.panel{background:linear-gradient(145deg,#121e31,#0e1727);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 12px 35px #0003}
+h2{font-size:1.08rem;margin:0 0 12px} .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.stat{background:#0a1220;border:1px solid var(--line);border-radius:12px;padding:10px}.stat small{display:block;color:var(--muted);font-size:.72rem}.stat strong{font-size:1.15rem}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.btn{border:1px solid #506582;background:#1c2d46;color:var(--text);padding:10px 13px;border-radius:10px;cursor:pointer;font-weight:750}.btn:hover{filter:brightness(1.2)}.btn.primary{background:linear-gradient(135deg,#f5c76a,#d89b35);color:#1b1720;border:0}.btn:disabled{opacity:.35;cursor:not-allowed}
+.board{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}.slot{border:1px dashed #405572;border-radius:14px;min-height:230px;padding:12px;background:#0a1220}.slot h3{margin:0 0 8px;font-size:.88rem;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin-top:12px}
+.card{position:relative;border:1px solid #455a78;border-radius:14px;padding:12px;background:linear-gradient(150deg,#1c2c43,#101827);cursor:pointer;min-height:190px;transition:.15s;overflow:hidden}
+.card:hover{transform:translateY(-2px);border-color:var(--gold)}.card.selected{outline:2px solid var(--gold);border-color:var(--gold)}
+.card .rank{position:absolute;right:10px;top:10px;color:var(--gold);font-weight:900;font-size:.75rem}.emoji{font-size:1.8rem}.company{font-size:1.05rem;font-weight:900;margin:6px 0 2px}.sector{color:var(--muted);font-size:.76rem}.rarity{font-size:.68rem;color:var(--gold);margin-top:5px}.skill{font-size:.8rem;line-height:1.4;margin-top:8px;color:#dce6f5}.bars{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:9px}.bar{font-size:.72rem;background:#0a1220;padding:5px 6px;border-radius:7px;color:#d4deee}.bar b{color:var(--green);float:right}
+.side{display:flex;flex-direction:column;gap:14px}.log{font-size:.82rem;line-height:1.55;color:#d6e0ef;max-height:280px;overflow:auto}.log div{padding:7px 0;border-bottom:1px solid #23324a}.event{border:1px solid #755c35;background:linear-gradient(135deg,#302719,#171b27);padding:12px;border-radius:12px}.event strong{color:var(--gold)}.muted{color:var(--muted);font-size:.84rem}.hidden{display:none!important}.pill{display:inline-block;border-radius:99px;background:#233650;padding:4px 8px;font-size:.72rem;color:#dbe7f7}.hand .card{min-height:215px}.footer{max-width:1200px;margin:0 auto;padding:0 18px 24px;color:var(--muted);font-size:.78rem}
+@media(max-width:850px){.wrap{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.board{grid-template-columns:1fr}.cards{grid-template-columns:repeat(auto-fill,minmax(145px,1fr))}}
+</style></head>
+<body>
+<header><div class="kicker">COLLECT • BUILD • BATTLE</div><h1>🏆 華爾街王者：市值爭霸</h1><p>抽出企業英雄，組建投資帝國，迎戰華爾街風暴。</p></header>
+<main class="wrap">
+<section>
+<div class="panel">
+<div class="stats">
+<div class="stat"><small>你的積分</small><strong id="score">0</strong></div><div class="stat"><small>對手積分</small><strong id="cpuScore">0</strong></div><div class="stat"><small>剩餘回合</small><strong id="round">8</strong></div><div class="stat"><small>資金點數</small><strong id="cash">5</strong></div>
+</div>
+<div class="row"><button class="btn primary" id="startBtn">開始新遊戲</button><button class="btn" id="drawBtn" disabled>抽 1 張公司卡</button><button class="btn" id="redrawBtn" disabled>花 2 資金：抽 2 選 1</button><button class="btn" id="endBtn" disabled>結束回合</button></div>
+<p class="muted" id="status">開始遊戲後，抽卡並選擇公司加入陣容，或挑戰對手。</p>
+<div class="event" style="margin-top:12px"><div class="muted">本回合市場事件</div><strong id="eventTitle">尚未開始</strong><div id="eventDesc" class="muted">每回合事件會改變產業戰力。</div></div>
+<div class="board">
+<div class="slot"><h3>🧠 你的投資陣容（最多 3 張）</h3><div id="myBoard" class="cards"></div><div class="muted" id="myEmpty">尚未部署公司卡</div></div>
+<div class="slot"><h3>🤖 對手陣容</h3><div id="cpuBoard" class="cards"></div><div class="muted" id="cpuEmpty">等待對手部署</div></div>
+</div>
+</div>
+<div class="panel" style="margin-top:14px"><h2>🃏 你的手牌 <span class="pill" id="handCount">0 張</span></h2><p class="muted">點選手牌，再按「部署選中卡」或「挑戰對手」。</p><div class="row"><button class="btn primary" id="playBtn" disabled>部署選中卡</button><button class="btn" id="battleBtn" disabled>挑戰對手</button><button class="btn" id="skillBtn" disabled>啟動技能（每局一次）</button></div><div id="hand" class="cards hand"></div></div>
+</section>
+<aside class="side">
+<div class="panel"><h2>📜 對局紀錄</h2><div class="log" id="log"><div>歡迎來到華爾街。準備建立你的投資帝國！</div></div></div>
+<div class="panel"><h2>🎯 遊戲規則</h2><ul class="muted" style="padding-left:18px;line-height:1.7"><li>每局 8 回合，起始資金 5 點。</li><li>每回合抽牌，可部署最多 3 張公司卡。</li><li>挑戰時選擇屬性，雙方戰力較高者得 3 分。</li><li>產業與市場事件會帶來加成。</li><li>打出不同產業的公司，可獲得多元配置獎勵。</li><li>結束時依積分、陣容與資金計算總分。</li></ul></div>
+<div class="panel"><h2>🏅 產業任務</h2><div class="muted" id="missions">部署 3 個不同產業，取得分散配置加成。</div></div>
+</aside></main>
+<div class="footer">原型遊戲｜公司屬性與技能為娛樂用途的自訂數值，不代表真實股票評級或投資建議。公司名單是示範性全球大型上市公司集合，並非即時市值前 50 名排序；正式版應按指定日期核實排名。</div>
+<script>
+const companies=[
+["NVIDIA","半導體／AI","🟢",9,10,9,8,"AI 浪潮","搭配科技公司時成長 +2。","科技"],
+["Apple","消費科技","🍎",7,7,10,4,"品牌護城河","抵銷一次對手技能效果。","科技"],
+["Microsoft","軟體／雲端","🪟",8,8,10,4,"雲端堡壘","每有一張科技卡，護城河 +1。","科技"],
+["Alphabet","搜尋／AI","🔎",8,9,9,6,"資料優勢","事件加成額外 +1。","科技"],
+["Amazon","電商／雲端","📦",7,9,8,6,"規模經濟","每有一張不同產業卡，積分 +1。","電商"],
+["Meta Platforms","社群／AI","♾️",8,9,8,7,"社群引擎","成長挑戰獲勝額外 +1 分。","科技"],
+["Broadcom","半導體／網通","🔌",8,8,9,6,"晶片協同","半導體事件下戰力 +3。","半導體"],
+["Saudi Aramco","能源","🛢️",7,5,9,5,"能源巨擘","能源事件時護城河 +3。","能源"],
+["TSMC","晶圓代工","💎",9,9,9,6,"先進製程","半導體挑戰 +2。","半導體"],
+["Berkshire Hathaway","多元控股","🚂",6,5,10,2,"價值堡壘","每局第一次失敗挑戰不扣分。","金融"],
+["Tesla","電動車／能源","⚡",9,10,6,10,"高波動引擎","可押注：贏得 5 分，輸則對手得 2 分。","汽車"],
+["JPMorgan Chase","銀行","🏦",7,6,9,4,"金融防線","資金 +1。","金融"],
+["Eli Lilly","製藥","🧬",7,8,8,6,"研發管線","成長力 +2。","醫療"],
+["Walmart","零售","🛒",6,6,9,3,"日常必需","防守挑戰 +2。","零售"],
+["Visa","支付網路","💳",7,7,9,3,"全球支付","護城河挑戰 +2。","金融"],
+["Tencent","網路／遊戲","🎮",7,8,8,6,"平台生態","科技卡每張令戰力 +1。","科技"],
+["Oracle","企業軟體／雲端","☁️",7,8,9,5,"資料庫帝國","雲端事件時 +3。","科技"],
+["Netflix","串流娛樂","🎬",7,8,7,7,"訂閱飛輪","贏得成長挑戰後抽 1 張。","媒體"],
+["Mastercard","支付網路","💳",7,7,9,3,"雙網效應","金融卡在場時 +2。","金融"],
+["Costco","會員零售","🏬",6,7,9,3,"會員黏著","每回合首次部署成本為 0。","零售"],
+["ExxonMobil","能源","⛽",7,5,8,6,"能源供應","能源事件時 +3。","能源"],
+["Johnson & Johnson","醫療保健","🩺",6,5,9,3,"防禦醫療","防守挑戰 +2。","醫療"],
+["AbbVie","製藥","💊",6,6,8,5,"產品組合","資金 +1。","醫療"],
+["Bank of America","銀行","🏛️",6,6,8,5,"信貸網絡","金融挑戰 +2。","金融"],
+["Procter & Gamble","民生消費","🧴",5,5,9,2,"品牌矩陣","每回合可抵銷 1 點事件扣分。","消費"],
+["Home Depot","居家零售","🛠️",6,6,8,4,"專業通路","零售卡在場時 +2。","零售"],
+["ASML","半導體設備","🔬",8,9,9,6,"光刻壟斷","半導體挑戰 +3。","半導體"],
+["Novo Nordisk","製藥","💉",7,9,8,7,"創新療法","成長力 +2。","醫療"],
+["SAP","企業軟體","🧩",6,7,9,4,"企業黏著","護城河挑戰 +2。","科技"],
+["Hermès","精品","👜",6,6,9,4,"稀缺奢華","防守挑戰 +2。","精品"],
+["LVMH","精品","🥂",7,7,8,6,"品牌帝國","精品卡在場時 +2。","精品"],
+["Toyota","汽車","🚗",7,6,9,4,"精實製造","汽車挑戰 +2。","汽車"],
+["Samsung Electronics","電子／半導體","📱",8,8,8,6,"垂直整合","半導體或科技事件 +2。","半導體"],
+["Cisco","網路設備","🌐",6,6,9,4,"網路骨幹","科技卡在場時 +1。","科技"],
+["AMD","半導體","🟥",8,9,7,8,"挑戰者晶片","半導體挑戰 +2。","半導體"],
+["Qualcomm","行動晶片","📡",7,7,8,6,"連線優勢","科技事件時 +2。","半導體"],
+["Palantir","資料分析／AI","🛰️",8,10,6,9,"情報優勢","AI 事件時 +3。","科技"],
+["IBM","企業科技","🧠",6,6,8,4,"企業轉型","部署第二張科技卡得 1 分。","科技"],
+["Coca-Cola","飲料","🥤",5,5,9,2,"全球品牌","防守挑戰 +2。","消費"],
+["McDonald's","餐飲","🍔",6,6,9,3,"加盟系統","消費卡在場時 +2。","消費"],
+["Shell","能源","🟡",6,5,8,5,"能源交易","能源事件時 +2。","能源"],
+["China Mobile","電信","📶",5,5,8,3,"訂閱現金流","護城河挑戰 +2。","電信"],
+["Inditex","服飾零售","👗",6,7,8,5,"快速時尚","零售事件時 +2。","零售"],
+["Kweichow Moutai","消費／酒業","🍶",6,6,9,5,"品牌稀缺","護城河 +2。","消費"],
+["L'Oréal","美妝","💄",6,7,8,4,"美妝矩陣","消費卡在場時 +2。","消費"],
+["T-Mobile US","電信","📱",6,7,8,5,"網路升級","科技事件時 +1。","電信"],
+["BHP","礦業","⛏️",6,5,8,6,"資源儲備","能源／資源事件時 +3。","原物料"],
+["Rio Tinto","礦業","🪨",6,5,8,6,"礦產供應","資源事件時 +3。","原物料"],
+["PDD Holdings","電商","🛍️",8,9,6,9,"低價擴張","成長挑戰 +2。","電商"],
+["Shopify","電商軟體","🛒",7,9,7,8,"商家生態","電商卡在場時 +2。","電商"]
+];
+const events=[
+["AI 大爆發","科技類公司成長力 +3。","科技","growth",3],["升息風暴","金融公司護城河 +2，成長挑戰 -1。","金融","moody",2],
+["晶片短缺","半導體公司攻擊力 +3。","半導體","attack",3],["能源危機","能源公司攻擊力 +3。","能源","attack",3],
+["消費旺季","零售與消費公司成長力 +2。","零售","growth",2],["反壟斷調查","科技公司本輪攻擊力 -2。","科技","attack",-2],
+["黑天鵝事件","高波動公司本輪全屬性 -2。","波動","risk",-2],["降息行情","金融與科技公司成長力 +2。","科技","growth",2],
+["雲端需求激增","科技公司護城河 +2。","科技","moat",2],["藥物突破","醫療公司成長力 +3。","醫療","growth",3],
+["奢侈品熱潮","精品公司攻擊力 +3。","精品","attack",3],["供應鏈重組","半導體與原物料公司護城河 +2。","半導體","moat",2],
+["電商購物節","電商公司成長力 +3。","電商","growth",3],["網路安全警報","科技公司護城河 +2。","科技","moat",2],
+["原物料飆升","原物料公司攻擊力 +3。","原物料","attack",3],["全球旅遊復甦","消費與精品公司成長力 +2。","消費","growth",2],
+["廣告回暖","媒體公司攻擊力 +2。","媒體","attack",2],["電動車競賽","汽車公司成長力 +3。","汽車","growth",3],
+["品牌忠誠","消費公司護城河 +2。","消費","moat",2],["市場平靜","本輪沒有產業加成，雙方各得 1 資金。","全部","calm",1]
+].map((e,i)=>({id:i,title:e[0],desc:e[1],sector:e[2],stat:e[3],bonus:e[4]}));
+let deck=[],hand=[],myBoard=[],cpuBoard=[],score=0,cpuScore=0,round=8,cash=5,selected=null,event=null,started=false,skillUsed=false,redrawChoices=null;
+const $=id=>document.getElementById(id);
+function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function log(s){let d=document.createElement("div");d.textContent=s;$("log").prepend(d)}
+function cardObj(c,i){return {id:i,name:c[0],sector:c[1],emoji:c[2],attack:c[3],growth:c[4],moat:c[5],risk:c[6],skill:c[7],desc:c[8],group:c[9],rank:i+1}}
+function cardHTML(c,zone="hand",idx=0){return `<div class="card ${zone==="hand"&&selected===c.id?"selected":""}" data-id="${c.id}" data-zone="${zone}"><span class="rank">#${c.rank}</span><div class="emoji">${c.emoji}</div><div class="company">${c.name}</div><div class="sector">${c.sector}</div><div class="rarity">${c.rank<=5?"✦ 傳說":c.rank<=15?"✦ 史詩":c.rank<=30?"✦ 稀有":"普通"} · ${c.group}</div><div class="bars"><div class="bar">攻擊 <b>${c.attack}</b></div><div class="bar">成長 <b>${c.growth}</b></div><div class="bar">護城河 <b>${c.moat}</b></div><div class="bar">波動 <b>${c.risk}</b></div></div><div class="skill"><b>${c.skill}：</b>${c.desc}</div></div>`}
+function render(){ $("score").textContent=score;$("cpuScore").textContent=cpuScore;$("round").textContent=round;$("cash").textContent=cash;$("handCount").textContent=hand.length+" 張";
+$("hand").innerHTML=hand.map(c=>cardHTML(c)).join("");$("myBoard").innerHTML=myBoard.map(c=>cardHTML(c,"my")).join("");$("cpuBoard").innerHTML=cpuBoard.map(c=>cardHTML(c,"cpu")).join("");
+$("myEmpty").classList.toggle("hidden",myBoard.length>0);$("cpuEmpty").classList.toggle("hidden",cpuBoard.length>0);
+$("drawBtn").disabled=!started||round<=0||hand.length>=8;$("redrawBtn").disabled=!started||round<=0||cash<2||hand.length>=8;$("endBtn").disabled=!started||round<=0;
+const c=hand.find(x=>x.id===selected);$("playBtn").disabled=!c||myBoard.length>=3;$("battleBtn").disabled=!c||cpuBoard.length===0;$("skillBtn").disabled=!c||skillUsed;
+$("missions").textContent=`目前不同產業：${new Set(myBoard.map(c=>c.group)).size} / 3。達成 3 種產業，結算時 +5 分。`;
+document.querySelectorAll(".card[data-zone='hand']").forEach(el=>el.onclick=()=>{selected=Number(el.dataset.id);render()});
+}
+function start(){deck=shuffle(companies.map((c,i)=>cardObj(c,i)));hand=[];myBoard=[];cpuBoard=[];score=0;cpuScore=0;round=8;cash=5;selected=null;started=true;skillUsed=false;$("log").innerHTML="";log("新遊戲開始！抽牌、部署、挑戰，打造你的投資帝國。");for(let i=0;i<5;i++)hand.push(deck.pop());cpuBoard.push(deck.pop());cpuBoard.push(deck.pop());nextEvent();$("status").textContent="你的回合：抽牌後部署公司或挑戰對手。";render()}
+function nextEvent(){event=events[Math.floor(Math.random()*events.length)];$("eventTitle").textContent=event.title;$("eventDesc").textContent=event.desc;log("市場事件："+event.title+" — "+event.desc)}
+function draw(){if(deck.length===0)deck=shuffle(companies.map((c,i)=>cardObj(c,i)));if(hand.length<8){let c=deck.pop();hand.push(c);log("你抽到 "+c.name+"。");selected=c.id;render()}}
+function redraw(){if(cash<2||hand.length>=8)return;cash-=2;let a=deck.pop(),b=deck.pop();if(!a||!b){deck=shuffle(companies.map((c,i)=>cardObj(c,i)));a=deck.pop();b=deck.pop()}let pick=confirm(`抽到：\n1. ${a.name}\n2. ${b.name}\n\n按「確定」選 ${a.name}；按「取消」選 ${b.name}`)?a:b;hand.push(pick);log(`花費 2 資金，選擇 ${pick.name}。`);selected=pick.id;render()}
+function play(){let c=hand.find(x=>x.id===selected);if(!c||myBoard.length>=3)return;hand=hand.filter(x=>x.id!==selected);myBoard.push(c);cash+=1;log(`部署 ${c.name}，獲得 1 資金。`);if(new Set(myBoard.map(x=>x.group)).size===3){score+=2;log("多元產業組合啟動，立即 +2 分！")}selected=null;render()}
+function effective(c,stat,side){let val=c[stat]||0;if(event&&event.sector!=="全部"&&(c.group===event.sector||(event.sector==="科技"&&c.group==="科技"))){if(event.stat===stat)val+=event.bonus}
+if(event&&event.title==="黑天鵝事件"&&c.risk>=8)val-=2;
+if(c.name==="NVIDIA"&&myBoard.some(x=>x.group==="科技"&&x.id!==c.id)&&stat==="growth")val+=2;
+if(c.name==="TSMC"&&stat==="attack"&&event?.sector==="半導體")val+=2;
+return val}
+function battle(){let c=hand.find(x=>x.id===selected);if(!c||!cpuBoard.length)return;let opp=cpuBoard[Math.floor(Math.random()*cpuBoard.length)];let stats=["attack","growth","moat"],names={attack:"攻擊力",growth:"成長力",moat:"護城河"};let stat=stats[Math.floor(Math.random()*3)];let a=effective(c,stat,"me"),b=effective(opp,stat,"cpu");log(`挑戰：${c.name} 對上 ${opp.name}，比拼${names[stat]}（${a}：${b}）。`);
+if(a>b){score+=3;cash+=1;log(`你贏了！+3 分、+1 資金。`);if(c.name==="Tesla"){score+=2;log("Tesla 高波動獎勵額外 +2 分！")}}else if(a<b){cpuScore+=3;log(`對手獲勝，對手 +3 分。`)}else{score++;cpuScore++;log("平手，雙方各 +1 分。")}
+hand=hand.filter(x=>x.id!==selected);selected=null;render()}
+function skill(){let c=hand.find(x=>x.id===selected);if(!c||skillUsed)return;skillUsed=true;if(c.name==="JPMorgan Chase"||c.name==="AbbVie"){cash++;log(c.name+" 技能觸發：+1 資金。")}else if(c.name==="Amazon"){score+=Math.min(3,new Set(myBoard.map(x=>x.group)).size);log("Amazon 規模經濟：依不同產業獲得積分。")}else if(c.name==="Tesla"){score+=2;log("Tesla 高波動引擎：支付風險，獲得 2 分。")}else{score+=1;log(c.skill+" 技能發動：+1 分。")}render()}
+function endTurn(){if(!started)return;round--;if(round<=0){finish();return}if(Math.random()<.75&&cpuBoard.length<3){let c=deck.pop();if(c){cpuBoard.push(c);log("對手部署 "+c.name+"。")}}if(Math.random()<.6){cpuScore++;log("對手的投資組合本輪獲得 +1 分。")}nextEvent();skillUsed=false;selected=null;draw();$("status").textContent="新回合開始！市場事件已更新。";render()}
+function finish(){started=false;let bonus=new Set(myBoard.map(c=>c.group)).size>=3?5:0;let lineup=myBoard.reduce((s,c)=>s+Math.floor((c.attack+c.growth+c.moat)/6),0);score+=bonus+lineup;cpuScore+=cpuBoard.reduce((s,c)=>s+Math.floor((c.attack+c.growth+c.moat)/8),0);$("status").textContent=score>cpuScore?`🏆 你贏了！最終 ${score}：${cpuScore}`:score<cpuScore?`🤖 對手獲勝！最終 ${score}：${cpuScore}`:`🤝 平手！最終 ${score}：${cpuScore}`;log(`遊戲結束！陣容加成 +${lineup}，多元配置加成 +${bonus}。最終比分：你 ${score}：${cpuScore} 對手。`);render();$("drawBtn").disabled=true;$("redrawBtn").disabled=true;$("endBtn").disabled=true}
+$("startBtn").onclick=start;$("drawBtn").onclick=draw;$("redrawBtn").onclick=redraw;$("playBtn").onclick=play;$("battleBtn").onclick=battle;$("skillBtn").onclick=skill;$("endBtn").onclick=endTurn;
+render();
+</script></body></html>
