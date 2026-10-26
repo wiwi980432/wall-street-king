@@ -902,31 +902,76 @@ body{background:radial-gradient(ellipse at 50% -20%,#243d5d 0%,#0a1327 56%,#080f
 .tap-zoom-card .duel-card.cinematic-card .card-skill>span{font-size:clamp(.7rem,2.9vw,.94rem)!important}
 .tap-zoom-card .duel-card.cinematic-card .card-footer strong{font-size:1.08rem!important}
 @media(max-width:380px){#game .annual-ledger>.hand-area .fan .duel-card{flex-basis:34%!important;width:34%!important;max-width:34%!important}#game .annual-ledger>.hand-area .fan .duel-card:first-child{--fan-tilt:-6deg}#game .annual-ledger>.hand-area .fan .duel-card:last-child{--fan-tilt:6deg}}
+</style><style>
+/* NEW GLOBAL FIFTY CINEMATIC DESIGN */
+body{background:radial-gradient(ellipse at 50% 20%,#173451 0%,#071324 50%,#030b17 100%)!important}
+#game .turn{border:1.5px solid #e1b86e!important;background:linear-gradient(90deg,#101a2a,#132842,#0b182b)!important;box-shadow:0 0 13px #ffbf5c36,inset 0 1px #ffe9b760!important}
+#game #turn{background:linear-gradient(#49331c,#161b29)!important;border-color:#f9cc7b!important;color:#ffe4a2!important}
+#game #phase{color:#ffe4a7!important;text-shadow:0 0 12px #e7b45a5e!important}
+#game .annual-ledger{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(0,.72fr) minmax(0,3.5fr) auto minmax(0,.72fr)!important;gap:5px!important}
+#game .annual-ledger>.opponent-side{grid-row:1!important;order:initial!important}
+#game .annual-ledger>.hand-area{grid-row:2!important;order:initial!important}
+#game .annual-ledger>.versus{grid-row:3!important;order:initial!important}
+#game .annual-ledger>.player-side{grid-row:4!important;order:initial!important}
+#game .annual-ledger>.opponent-side,#game .annual-ledger>.player-side{min-height:0!important;max-height:none!important;flex:initial!important;padding:5px 10px!important;border-radius:11px!important;background:linear-gradient(105deg,#12283d,#091b2c)!important;gap:1px!important}
+#game .annual-ledger>.hand-area{min-height:0!important;max-height:none!important;flex:initial!important;position:relative!important;overflow:hidden!important;border:1px solid #b48a4b!important;border-radius:15px!important;background:radial-gradient(ellipse at 50% 96%,#245075,#0b1c33 60%,#071322)!important;box-shadow:inset 0 1px #f9e3ad45,0 7px 24px #0008!important;padding:7px 6px!important}
+#game .annual-ledger>.hand-area::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0 57px,#88baff08 58px 59px),linear-gradient(0deg,#c58d3418,transparent 40%)}
+#game .hand-title{z-index:1!important;position:relative!important;color:#ffe3a1!important}
+#game .hand-area .fan{position:relative!important;display:flex!important;flex:1 1 auto!important;align-items:center!important;justify-content:center!important;gap:0!important;min-height:0!important;padding:10px 2px 14px!important;perspective:850px!important;overflow:visible!important}
+#game .hand-area .fan::after{content:"";position:absolute;bottom:2px;left:5%;right:5%;height:8px;border-radius:50%;background:#ffc86c4d;filter:blur(10px);pointer-events:none}
+#game .annual-ledger>.hand-area .fan .duel-card{position:relative!important;flex:0 0 33%!important;width:33%!important;max-width:33%!important;height:auto!important;max-height:94%!important;aspect-ratio:5/7!important;margin:0 -0.3%!important;transform-origin:center bottom!important;transform:rotate(0deg)!important;z-index:2!important;touch-action:manipulation!important}
+#game .annual-ledger>.hand-area .fan .duel-card:first-child{transform:rotate(-8deg) translateY(9px)!important;z-index:1!important}
+#game .annual-ledger>.hand-area .fan .duel-card:last-child{transform:rotate(8deg) translateY(9px)!important;z-index:1!important}
+#game .annual-ledger>.hand-area .fan .duel-card:active{filter:brightness(1.18)!important;z-index:4!important}
+.duel-card.cinematic-card{box-sizing:border-box!important;overflow:hidden!important;aspect-ratio:5/7!important;padding:3px!important;border:2px solid var(--card-light)!important;border-radius:10px!important;background:linear-gradient(125deg,#ffe5aa 0%,var(--card-light) 4%,var(--card-dark) 13%,#081321 50%,var(--card-dark) 89%,var(--card-light) 97%,#ffe3a0)!important;box-shadow:inset 0 0 0 1px #fff8,0 6px 17px #000b,0 0 12px var(--card-dark)!important}
+.duel-card.cinematic-card .card-inner{box-sizing:border-box!important;display:flex!important;flex-direction:column!important;gap:2px!important;padding:3px!important;height:100%!important;min-height:0!important;overflow:hidden!important;border:1px solid #ffdfa6!important;border-radius:7px!important;background:linear-gradient(160deg,var(--card-dark),#07172a 38%,#0c2238 72%,var(--card-dark))!important}
+.duel-card.cinematic-card .premium-sector{display:flex!important;flex:0 0 10%!important;align-items:center!important;gap:3px!important;min-height:0!important;font-size:clamp(.45rem,1.85vw,.77rem)!important;color:#fff0c4!important}
+.duel-card.cinematic-card .sector-symbol{display:grid!important;place-items:center!important;height:100%!important;aspect-ratio:1!important;border:1px solid #ffe5a5!important;border-radius:4px!important;background:#071728!important;font-size:clamp(.6rem,2.5vw,1.1rem)!important}
+.duel-card.cinematic-card .sector-title{flex:1!important;min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;font-weight:950!important}
+.duel-card.cinematic-card .premium-sector em{font-size:.8em!important;font-style:normal!important;color:#ffe9ac!important}
+.duel-card.cinematic-card .card-heading{display:flex!important;flex:0 0 16%!important;max-height:16%!important;align-items:center!important;justify-content:center!important;min-height:0!important;gap:3px!important;padding:2px!important;border:1px solid #f7d491!important;border-radius:4px!important;background:linear-gradient(90deg,#040d19,#102a43,#040d19)!important}
+.duel-card.cinematic-card .card-company{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;min-width:0!important;overflow:hidden!important;font-size:clamp(.65rem,2.65vw,1.12rem)!important;font-weight:950!important;line-height:1.08!important;color:#ffebba!important;text-shadow:0 1px 3px #000!important;text-align:center!important}
+.duel-card.cinematic-card .company-en{display:block!important;font-size:.65em!important;color:#f4f5f6!important;font-weight:650!important;line-height:1.1!important}
+.duel-card.cinematic-card .card-rank{flex:0 0 auto!important;font-size:clamp(.65rem,2.3vw,1rem)!important}
+.duel-card.cinematic-card .card-type{display:flex!important;flex:0 0 6%!important;align-items:center!important;justify-content:center!important;min-height:0!important}
+.duel-card.cinematic-card .card-stars{font-size:clamp(.54rem,2.1vw,.92rem)!important;letter-spacing:0!important;color:#ffd06a!important;text-shadow:0 1px 3px #000!important}
+.duel-card.cinematic-card .card-art{position:relative!important;display:flex!important;flex:1 1 0!important;min-height:0!important;max-height:none!important;width:100%!important;overflow:hidden!important;border:2px solid #f9dfa5!important;border-radius:4px!important;background:#10243b!important}
+.duel-card.cinematic-card .company-illustration{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important}
+.duel-card.cinematic-card .premium-art-label{display:grid!important;place-items:center!important;flex:0 0 8%!important;min-height:0!important;overflow:hidden!important;padding:1px!important;border:1px solid #ffe4ab!important;border-radius:4px!important;background:linear-gradient(90deg,var(--card-dark),#154765,var(--card-dark))!important;color:#fff5d7!important;font-size:clamp(.43rem,1.75vw,.73rem)!important;font-weight:950!important;white-space:nowrap!important}
+.duel-card.cinematic-card .card-skill{display:flex!important;flex-direction:row!important;align-items:center!important;flex:0 0 24%!important;max-height:24%!important;min-height:0!important;gap:4px!important;padding:3px!important;overflow:hidden!important;border:1px solid #fff1c6!important;border-radius:4px!important;background:linear-gradient(135deg,#fff1c8,#f0cb8f 62%,#d8aa68)!important}
+.duel-card.cinematic-card .skill-emblem{display:grid!important;place-items:center!important;flex:0 0 20%!important;max-width:23%!important;height:65%!important;border:1px solid #f9d68f!important;border-radius:4px!important;background:linear-gradient(145deg,var(--card-dark),#061321)!important;color:#ffe4a4!important;font-size:clamp(.7rem,2.8vw,1.4rem)!important}
+.duel-card.cinematic-card .skill-copy{display:flex!important;flex:1 1 auto!important;flex-direction:column!important;min-width:0!important;min-height:0!important;gap:2px!important;overflow:hidden!important}
+.duel-card.cinematic-card .skill-copy b{font-size:clamp(.48rem,1.88vw,.78rem)!important;line-height:1.1!important;color:#342316!important;font-weight:950!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+.duel-card.cinematic-card .skill-copy>span{display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:3!important;overflow:hidden!important;font-size:clamp(.46rem,1.67vw,.69rem)!important;line-height:1.2!important;font-weight:800!important;color:#271f17!important}
+.duel-card.cinematic-card .card-footer{display:flex!important;flex:0 0 13%!important;min-height:0!important;gap:3px!important;padding:1px!important;border:none!important;background:transparent!important}
+.duel-card.cinematic-card .yield-box,.duel-card.cinematic-card .cost-box{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;min-width:0!important;padding:1px 2px!important;border:1px solid #f2d18e!important;border-radius:4px!important;background:linear-gradient(145deg,#061423,#183049)!important}
+.duel-card.cinematic-card .yield-box{flex:1 1 auto!important}.duel-card.cinematic-card .cost-box{flex:0 0 37%!important}
+.duel-card.cinematic-card .card-footer small{font-size:clamp(.39rem,1.4vw,.61rem)!important;color:#f5e5c4!important;line-height:1.1!important;white-space:nowrap!important}
+.duel-card.cinematic-card .card-footer strong{font-size:clamp(.55rem,2.1vw,.9rem)!important;line-height:1.15!important;color:#a9f6b6!important;white-space:nowrap!important}
+.duel-card.cinematic-card .cost-box strong{font-size:clamp(.4rem,1.4vw,.68rem)!important;color:#ffd074!important;letter-spacing:-1px!important}
+.tap-zoom-card .duel-card.cinematic-card{transform:none!important}
+.tap-zoom-card .duel-card.cinematic-card .card-company{font-size:clamp(1.05rem,4.5vw,1.45rem)!important}
+.tap-zoom-card .duel-card.cinematic-card .company-en{font-size:.7em!important}
+.tap-zoom-card .duel-card.cinematic-card .card-stars{font-size:1.1rem!important}
+.tap-zoom-card .duel-card.cinematic-card .skill-copy b{font-size:clamp(.8rem,3.4vw,1.05rem)!important}
+.tap-zoom-card .duel-card.cinematic-card .skill-copy>span{font-size:clamp(.72rem,2.9vw,.96rem)!important;-webkit-line-clamp:4!important}
+.tap-zoom-card .duel-card.cinematic-card .card-footer small{font-size:.8rem!important}
+.tap-zoom-card .duel-card.cinematic-card .card-footer strong{font-size:1.1rem!important}
+.tap-select-confirm{background:linear-gradient(135deg,#61401a,#a36d27,#513313)!important;border-color:#f7d086!important;box-shadow:inset 0 1px #fff7,0 4px 14px #0008!important}
+.tap-select-cancel{background:linear-gradient(135deg,#172c43,#0b1829)!important;border-color:#8aaccf!important}
+@media(max-width:390px){#game .annual-ledger>.hand-area .fan .duel-card{flex-basis:33%!important;width:33%!important;max-width:33%!important}#game .annual-ledger>.hand-area .fan .duel-card:first-child{transform:rotate(-6deg) translateY(7px)!important}#game .annual-ledger>.hand-area .fan .duel-card:last-child{transform:rotate(6deg) translateY(7px)!important}}
 </style></head><body><div class="app"><header class="top"><div class="brand">💰 華爾街王者 <small>百兆富豪戰 · 全球百大企業</small></div><button class="btn outline" id="homeButton">首頁</button></header>
 <section class="screen" id="home"><div class="hero"><div>🏆 全球百大企業卡牌競賽</div><h1>百兆富豪戰</h1><div class="big">目標 $100 兆</div><p>招募世界級企業、出牌立即發動技能、替換場上公司來經營你的帝國。<br>比電腦更快累積 100 兆美元！</p><button class="btn primary" id="startButton">🎮 開始遊戲</button><button class="btn" id="rulesButton">📘 玩法教學</button><button class="btn" id="catalogButton">🃏 百大企業圖鑑</button></div><p class="source">卡牌池參考 2026 年全球大型上市公司市值排名；排名會隨市場變動。年度淨利為供遊戲使用的近似示意值，非即時或經審計的最新財報。技能與遊戲收益為虛構設定。</p></section>
 <section class="screen" id="rulesScreen" hidden><h2>📘 三步學會百兆富豪戰</h2><div class="rules"><p><strong>遊戲規則：</strong>每一年從 3 張手牌中選擇 1 張公司，立即觸發該卡技能，並將公司加入自己的投資組合。選過的公司往後每一年都會持續創造收益，累積的公司不會因為新選牌而失去收益。</p><p>選牌後自動進行雙方年度收益結算，再獲得新的 3 張手牌。誰先累積到 <strong>100 兆美元</strong> 就獲勝！每年可刷新手牌一次。</p></div><button class="btn primary" id="rulesStart">開始遊戲 →</button><button class="btn" id="rulesBack">返回首頁</button></section>
 <section class="screen" id="catalogScreen" hidden><h2>🃏 全球百大企業圖鑑 <span class="pill" id="catalogCount">100 家</span></h2><div class="catalog-controls"><input id="search" placeholder="搜尋公司、國家或產業"><button class="btn" id="catalogBack">返回首頁</button></div><div class="catalog" id="catalog"></div><p class="source">排名參考：2026 年大型上市公司市值榜單；卡片年度淨利為近似示意，並非最新正式財報。</p></section>
 <section class="screen" id="game" hidden>
-<div class="turn"><span id="turn">第 1 年</span><b id="phase">選擇今年的公司</b><button class="btn outline" id="infoButton">？規則</button></div>
-<div class="annual-ledger"><div class="annual-side opponent-side">
-  <div class="ledger-heading">🤖 上方｜對手 <span id="cpuSlots">累積 0 家</span></div>
-  <div class="ledger-money"><span>累積財富</span><strong id="cpuMoney">$0.0 兆</strong></div>
-  <div class="ledger-rate">每年總收益：<span id="cpuRate">+0.0 兆</span></div>
-  <div class="track"><div class="fill" id="cpuBar"></div></div>
-  <div class="year-card-history" id="cpuBoard"></div>
- </div>
- <div class="hand-area"><div class="hand-title"><span>✨ 本年度投資 · 三選一</span><span class="hand-controls"><span class="pill" id="handCount">3 張</span><button type="button" id="refreshHand" class="refresh-hand-btn">🔄 換牌</button></span></div><div class="fan" id="hand"></div><div class="message" id="message">點擊卡牌放大 · 再點一次確認選擇</div></div>
+<div class="turn"><span id="turn">第 1 年</span><b id="phase">◉ 選擇今年的公司</b><button class="btn outline" id="infoButton">？規則</button></div>
+<div class="annual-ledger">
+<div class="annual-side opponent-side"><div class="ledger-heading">🤖 對手資產 <span id="cpuSlots">累積 0 家</span></div><div class="ledger-money"><span>累積財富</span><strong id="cpuMoney">$0.0 兆</strong></div><div class="ledger-rate">每年總收益 <span id="cpuRate">+0.0 兆</span></div><div class="track"><div class="fill" id="cpuBar"></div></div><div class="year-card-history" id="cpuBoard"></div></div>
+<div class="hand-area"><div class="hand-title"><span>✦ 全球 50 大企業 · 三選一</span><span class="hand-controls"><span class="pill" id="handCount">3 張</span><button type="button" id="refreshHand" class="refresh-hand-btn">⟳ 換牌</button></span></div><div class="fan" id="hand"></div><div class="message" id="message">點選卡牌放大 · 再點一次確認投資</div></div>
 <div class="versus" id="prompt">第 1 年｜選擇公司</div>
-<div class="annual-side player-side">
-  <div class="ledger-heading">🧑 下方｜我的公司 <span id="mySlots">累積 0 家</span></div>
-  <div class="ledger-money"><span>累積財富</span><strong id="myMoney">$0.0 兆</strong></div>
-  <div class="ledger-rate">每年總收益：<span id="myRate">+0.0 兆</span></div>
-  <div class="track"><div class="fill" id="myBar"></div></div>
-  <div class="year-card-history" id="myBoard"></div>
- </div>
-</div>
-<div class="foot"><button class="btn outline" id="restartButton">重新開始</button></div>
-</section></div>
+<div class="annual-side player-side"><div class="ledger-heading">👑 我的資產 <span id="mySlots">累積 0 家</span></div><div class="ledger-money"><span>累積財富</span><strong id="myMoney">$0.0 兆</strong></div><div class="ledger-rate">每年總收益 <span id="myRate">+0.0 兆</span></div><div class="track"><div class="fill" id="myBar"></div></div><div class="year-card-history" id="myBoard"></div></div>
+</div><div class="foot"><button class="btn outline" id="restartButton">重新開始</button></div></section></div>
 <div id="cpuPickReveal" class="cpu-pick-reveal" hidden><div class="cpu-pick-panel"><h2>🤖 對手今年選擇</h2><div id="cpuPickCard"></div><button type="button" id="confirmCpuPick" class="advance-stage-btn">查看年度結算 →</button></div></div><div id="yearSettlement" class="year-settlement" aria-live="polite" hidden><div class="settlement-panel"><div class="settlement-heading">💰 年度收益結算</div><div id="settlementYear" class="settlement-year"></div><div class="settlement-row cpu"><span>🤖 對手年度收入</span><strong id="settlementCpu">計算中…</strong></div><div class="settlement-row player"><span>🧑 我的年度收入</span><strong id="settlementMine">等待結算…</strong></div><div class="settlement-tip">年度收益已結算</div><button type="button" id="confirmSettlement" class="advance-stage-btn">進入下一年 →</button></div></div><div class="modal hidden" id="detail" role="dialog" aria-modal="true"><div class="sheet"><button class="close" id="closeDetail">✕</button><img id="detailLogo" class="logo" alt="公司 Logo"><div class="art" id="detailArt"></div><h2 id="detailName"></h2><div class="meta" id="detailMeta"></div><div class="feature" id="detailProfit"></div><div class="feature" id="detailSkill"></div><button class="btn primary" id="detailAction">確認</button><button class="btn outline" id="detailBack">返回遊戲</button></div></div>
 <div class="result hidden" id="result"><div class="result-box"><div style="font-size:3rem" id="resultEmoji">🏆</div><h2 id="resultTitle">遊戲結束</h2><p id="resultText"></p><button class="btn primary" id="againButton">再玩一次</button><button class="btn" id="resultHome">返回首頁</button></div></div>
 <script>
@@ -936,7 +981,7 @@ const TARGET=100;
 const PROFIT_SCALE=0.022;
 const SPECIALS=["市場擴張","科技突破","品牌爆發","國際合作","成本優化","全球併購","研發突破","供應鏈加速","資本運作","數位升級"];
 const ZH_NAMES=["輝達","蘋果","字母控股","微軟","亞馬遜","台積電","Meta 元宇宙","博通","特斯拉","美光科技","波克夏海瑟威","超微半導體","禮來","摩根大通","沃爾瑪","威士卡","英特爾","埃克森美孚","艾司摩爾","嬌生","萬事達卡","艾伯維","帕蘭泰爾","甲骨文","思科","雪佛龍","好市多","美國銀行","科林研發","可口可樂","應用材料","開拓重工","默克藥廠","滙豐控股","戴爾科技","寶僑","聯合健康","奇異航太","安謀","帕羅奧圖網路","摩根士丹利","網飛","菲利普莫里斯","家得寶","加拿大皇家銀行","阿里巴巴","諾華","殼牌","高盛","亞瑞斯塔網路","阿斯特捷利康","奇異維諾瓦","雷神科技","三菱日聯金融","富國銀行","德州儀器","賽默飛世爾","科磊","思愛普","邁威爾科技","花旗集團","豐田汽車","安進","必和必拓","林德","國際商業機器","高通","桑坦德銀行","希捷科技","安費諾","美國運通","道達爾能源","威訊通訊","賽富時","多倫多道明銀行","吉利德科學","迪爾公司","Shopify 購物平台","亞德諾半導體","迪士尼","亞培","T-Mobile 電信","百事公司","美國電話電報","嘉信理財","伊頓","諾和諾德","南方銅業","偉塔房地產","麥當勞","貝萊德","聯合太平洋鐵路","威騰電子","輝瑞","波音","新紀元能源","丹納赫","康菲石油","力拓集團","百威英博"];
-const companies=DATA.map((c,i)=>({...c,name:ZH_NAMES[i]||c.name,skill:c.name+"・"+SPECIALS[i%SPECIALS.length],skillDesc:["立即賺取相當於本公司 3 回合的收益。","本公司永久增加 60% 每一年收益。","所有我方公司下一年收益加倍。","獲得相當於對手目前財富 6% 的獎金（上限 6 兆）。","本公司永久增加 50% 每一年收益。","立即獲得 5 兆美元。","立即獲得 3 兆，並使本公司永久增加 20% 收益。","本公司本年額外產生 4 倍收益。","獲得我方現有財富 10% 的額外收益（至少 2 兆）。","所有我方公司永久增加 12% 每一年收益。"][i%10]}));
+const companies=DATA.slice(0,50).map((c,i)=>({...c,name:ZH_NAMES[i]||c.name,skill:c.name+"・"+SPECIALS[i%SPECIALS.length],skillDesc:["立即賺取相當於本公司 3 回合的收益。","本公司永久增加 60% 每一年收益。","所有我方公司下一年收益加倍。","獲得相當於對手目前財富 6% 的獎金（上限 6 兆）。","本公司永久增加 50% 每一年收益。","立即獲得 5 兆美元。","立即獲得 3 兆，並使本公司永久增加 20% 收益。","本公司本年額外產生 4 倍收益。","獲得我方現有財富 10% 的額外收益（至少 2 兆）。","所有我方公司永久增加 12% 每一年收益。"][i%10]}));
 let deck=[],hand=[],mine=[],theirs=[],money=0,cpuMoney=0,turn=1,phase="player",acted=false,selected=null,detailCard=null,detailZone=null,gameId=0,finished=false,refreshedThisTurn=false;
 function show(id){document.querySelectorAll(".screen").forEach(el=>el.hidden=el.id!==id);$("homeButton").style.display=id==="home"?"none":""}
 function shuffled(){const a=[...companies];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
@@ -986,14 +1031,17 @@ function companyArtwork(c){
  return 'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(svg);
 }
 function cardHTML(c,zone,i=0,n=1){
- const offset=i-(n-1)/2,colors=INDUSTRY_COLORS[c.sector]||["#5a5870","#aab2cc"];const spec=skillSpec(c);
- const sectorSymbol=/醫|藥|生技|健康/.test(c.sector)?'⚕':/晶片|科技|電子|軟體|AI|半導體/.test(c.sector)?'▣':/能源|石油|電力/.test(c.sector)?'⚡':/金融|銀行|保險/.test(c.sector)?'◆':'✦';
+ const offset=i-(n-1)/2,colors=INDUSTRY_COLORS[c.sector]||["#365377","#8bc4f9"],spec=skillSpec(c);
  const logo="https://www.google.com/s2/favicons?domain="+encodeURIComponent(c.domain)+"&sz=64";
- return '<button class="company duel-card cinematic-card '+(selected===c.id&&zone==="hand"?"selected ":"")+(zone==="my"&&!acted?"available":"")+'" data-zone="'+zone+'" data-id="'+c.id+'" style="--offset:'+offset+';--dist:'+Math.abs(offset)+';--card-dark:'+colors[0]+';--card-light:'+colors[1]+'">'
- +'<span class="card-inner"><span class="premium-sector"><span class="sector-symbol">'+sectorSymbol+'</span><span class="sector-title">'+c.sector+'</span><em>LV.1</em></span><span class="card-heading"><span class="card-company">'+c.name+'<small class="company-en">'+c.ticker+'</small></span><span class="card-rank">'+({美國:"🇺🇸",丹麥:"🇩🇰",台灣:"🇹🇼",日本:"🇯🇵",中國:"🇨🇳",韓國:"🇰🇷",德國:"🇩🇪",英國:"🇬🇧",法國:"🇫🇷",瑞士:"🇨🇭"}[c.country]||"✦")+'</span></span>'
+ const emblem=/醫|藥|生技|健康/.test(c.sector)?"⚕":/晶片|科技|電子|軟體|半導體/.test(c.sector)?"▣":/能源|石油|電力/.test(c.sector)?"▤":/金融|銀行|保險/.test(c.sector)?"◆":"✦";
+ const flag=({美國:"🇺🇸",丹麥:"🇩🇰",台灣:"🇹🇼",日本:"🇯🇵",中國:"🇨🇳",韓國:"🇰🇷",德國:"🇩🇪",英國:"🇬🇧",法國:"🇫🇷",瑞士:"🇨🇭",加拿大:"🇨🇦",荷蘭:"🇳🇱"})[c.country]||"🌐";
+ return '<button type="button" class="company duel-card cinematic-card '+(selected===c.id&&zone==="hand"?"selected ":"")+'" data-zone="'+zone+'" data-id="'+c.id+'" style="--offset:'+offset+';--dist:'+Math.abs(offset)+';--card-dark:'+colors[0]+';--card-light:'+colors[1]+'">'
+ +'<span class="card-inner"><span class="premium-sector"><span class="sector-symbol">'+emblem+'</span><span class="sector-title">'+c.sector+'</span><em>LV.1</em></span>'
+ +'<span class="card-heading"><span class="card-company">'+c.name+'<small class="company-en">'+c.ticker+'</small></span><span class="card-rank">'+flag+'</span></span>'
  +'<span class="card-type"><span class="card-stars">★★★★★</span></span>'
  +'<span class="card-art"><img class="company-illustration" draggable="false" alt="" src="'+companyArtwork(c)+'"><img class="card-logo" loading="lazy" alt="" src="'+logo+'" onerror="this.style.display=\'none\'"></span>'
- +'<span class="premium-art-label">'+c.sector+' · 全球布局</span><span class="card-skill"><b>✧ '+spec.name+'</b><span>'+shortSkill(c)+'</span></span>'
+ +'<span class="premium-art-label">'+c.sector+' · 全球布局</span>'
+ +'<span class="card-skill"><span class="skill-emblem">'+emblem+'</span><span class="skill-copy"><b>卡牌技能｜'+spec.name+'</b><span>'+shortSkill(c)+'</span></span></span>'
  +'<span class="card-footer"><span class="yield-box"><small>▰ 每年收益</small><strong>+'+income(c).toFixed(1)+' 兆</strong></span><span class="cost-box"><small>投資評級</small><strong>★★★★★</strong></span></span></span></button>'
 }
 function portfolioHTML(arr,zone){
